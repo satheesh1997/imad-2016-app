@@ -2,7 +2,6 @@
 var express = require("express");
 var morgan = require("morgan");
 var path = require("path");
-var mysql = require("mysql");
 var app=express();
 
 
@@ -10,25 +9,6 @@ var app=express();
 app.use(morgan('combined'));
 
 
-
-//Creating Mysql Function
-var connection = mysql.createConnection({
-	host:'localhost',
-	user:'root',
-	password:'vaioxloud',
-	database:'IMAD'
-});
-
-
-
-//Connecting to mysql database
-connection.connect(function(err){
-	if(!err)
-		console.log("\nConnection to mysql server successfull..\n");
-	else
-		console.log("\nError inconnecting to mysql server.."+err+"\n");
-		//connection.close();
-});
 
 //bootstrap connecting functions
 app.get('/css/bootstrap.min.css', function(req, res){
