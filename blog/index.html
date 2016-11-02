@@ -1,0 +1,212 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <script>
+            document.title="Satheesh Kumar D";
+        </script>
+        <noscript> JavaScript Is Not Enabled On Browser </noscript>
+    <!-- Stylesheet -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <!-- Stylesheet added -->
+
+    <!-- meta tags -->
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+
+    <!-- meta end -->
+    <!-- Authors Fonts -->
+        <style>
+            @font-face {
+                font-family: sat;
+                src: url(./fonts/JosefinSans-Regular.ttf);
+            }
+            @font-face {
+                font-family: satbold;
+                src: url(./fonts/JosefinSans-SemiBold.ttf);
+            }
+            .brand:hover{
+                border-bottom:3px solid crimson;
+            }
+            .src_btn:hover{
+                cursor:pointer;
+            }
+            .alink{
+                border-bottom:3px solid black;
+                border-right:1px solid grey;
+            }
+            .brand{
+                border-right:1px solid grey;
+            }
+        </style>
+    </head>
+<body  style="font-family:sat">
+    <!-- background:darkorchid; -->
+    <div class="jumbotron" style=" background:crimson;">
+        <div class="container text-center">
+              <p class="text-right">
+                <a class="btn btn-danger btn-lg">Sign Up</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-primary btn-lg">Sign In</a>
+            </p>
+            <h1 style="font-family:satbold; color:white;">What's technology?</h1>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default" role="navigation" style="margin-top:-40px;">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" style="background:white;border-bottom:2px solid grey;">
+            <ul class="nav navbar-nav text-center" style="font-family:satbold; font-size:15px;">
+                <li class="active alink"><a href="#" style=" padding-left:70px; padding-right:70px;">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;HOME</a></li>
+                <li></li>
+                <li>
+                <a class="brand" href="#"  style=" padding-left:70px; padding-right:70px;">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp;BLOG</a></li>
+                <li></li>
+                <li><a class="brand" href="#"  style=" padding-left:70px; padding-right:70px;">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;ABOUT</a></li>
+                <li></li>
+                <li><a class="brand" href="#"  style=" padding-left:70px;  padding-right:70px;">
+                <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>&nbsp;CONTACT</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                
+                <div class="input-group"  style="font-family:satbold; font-size:25px;">
+                    <input type="text" class="form-control" id="search" placeholder="Keyword..">
+                    <!-- search script -->
+                    <script>
+                        function search(){
+                            console.log("Search Btn Clicked");
+                        }
+                    </script>
+                    <!-- search script end -->
+                    <div class="input-group-addon src_btn"onclick="search()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </div>
+                </div>
+                
+            </form>
+            
+        </div><!-- /.navbar-collapse -->
+    </nav>
+    
+    
+    <div class="container">
+        
+        <div class="row">
+                
+                <div class="col-md-3" >
+                    
+                    <div class="panel panel-default">
+                          <div class="panel-heading">
+                                <h1 class="panel-title text-center">Technology</h1>
+                          </div>
+                          <div class="panel-body">
+                                Panel content
+                          </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-3" >
+                    
+                    <div class="panel panel-default">
+                          <div class="panel-heading">
+                                <h1 class="panel-title text-center">Around Us</h1>
+                          </div>
+                          <div class="panel-body">
+                                Panel content
+                          </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-3" >
+                    
+                    <div class="panel panel-default">
+                          <div class="panel-heading">
+                                <h1 class="panel-title text-center">Fun and Entertainment</h1>
+                          </div>
+                          <div class="panel-body">
+                                Panel content
+                          </div>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md-3" style="background:crimson; color:white;">
+                   <h3 class="text-center">News Letter</h3> 
+                   <hr>
+                   <p class="lead text-center">"Use our news letter service to get notification on our latest updates & services"
+                   <form action="" method="POST" class="form-inline" role="form">
+                            <label class="sr-only" for="">Email Id</label>
+                           <input type="email" class="form-control" id="" placeholder="Signup Email">
+                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                   </form>
+                    
+                </div>
+                
+        </div>
+        
+    </div>
+<hr>
+    
+    <div class="container">
+        <div class="col-lg-9" style="padding-bottom:10px;">
+            <h1 class="text-center" style="font-family:satbold;">Latest Blog's</h1>
+            <hr style="width:25px;border-top:2px solid grey;">
+            <div class="row" style="border-bottom:2px solid grey;border-top:1px solid grey;border-left:1px solid grey;border-right:1px solid grey;padding:10px;">
+                <h2>Welcome to my blog!</h2>
+                <hr style=" border-top:1px solid grey;">
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        
+        <div style="background:grey;padding:20px; color:white;">
+            
+            <div class="container">
+                
+                <div class="col-lg-3">
+                    <legend> Other Links </legend>
+                    
+                        <li>Code Hunt</li>
+                        <li>Flames App</li>
+                        <li>Suduko App</li>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="text-center"> &copy; Satheesh Kumar D </h3>
+            </div>
+            
+        </div>
+        
+        
+    </footer>
+    
+</body>
+    <!-- Javascripts -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script>
+        var welcometext=`
+          |||||       ||      |||||||||||   ||      ||    ||||||    ||||||   |||||     ||      ||
+        ||          ||  ||         ||       ||      ||  ||        ||        ||         ||      ||
+        ||        ||      ||       ||       ||      ||  ||        ||        ||         ||      ||
+          ||||    ||      ||       ||       || |||| ||  ||||||||  ||||||||    ||||     || |||| ||
+              ||  || |||| ||       ||       ||      ||  ||        ||              ||   ||      ||
+              ||  ||      ||       ||       ||      ||  ||        ||              ||   ||      ||
+        ||||||    ||      ||       ||       ||      ||    ||||||    ||||||  ||||||     ||      ||`;
+        console.log(welcometext);
+    </script>
+</html>

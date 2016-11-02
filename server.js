@@ -1,136 +1,102 @@
-var express = require('express');
-var morgan = require('morgan');
-var path = require('path');
-var fs = require('fs');
-var data = fs.readFileSync("posts.agx");
+//Include Packages
+var express = require("express");
+var morgan = require("morgan");
+var path = require("path");
+var mysql = require("mysql");
+var app=express();
 
-var app = express();
+
+//Package Initialitation functions
 app.use(morgan('combined'));
 
-app.get('/index', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'index.html'));
-});
-
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'load.html'));
-});
 
 
-app.get('/ui/style.css', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'style.css'));
+//Creating Mysql Function
+var connection = mysql.createConnection({
+	host:'localhost',
+	user:'root',
+	password:'vaioxloud',
+	database:'IMAD'
 });
 
 
-app.get('/ui/main.js', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'main.js'));
+
+//Connecting to mysql database
+connection.connect(function(err){
+	if(!err)
+		console.log("\nConnection to mysql server successfull..\n");
+	else
+		console.log("\nError inconnecting to mysql server.."+err+"\n");
+		//connection.close();
 });
 
-app.get('/author', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'sat.jpg'));
+//bootstrap connecting functions
+app.get('/css/bootstrap.min.css', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog/css', 'bootstrap.min.css'));
+});
+app.get('/js/bootstrap.min.js', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog/js', 'bootstrap.min.js'));
+});
+app.get('/js/jquery.min.js', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog/js', 'jquery.min.js'));
+});
+app.get('/fonts/glyphicons-halflings-regular.woff2', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'glyphicons-halflings-regular.woff2'));
 });
 
-app.get('/bg', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'bg.jpg'));
+app.get('/fonts/glyphicons-halflings-regular.eot', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'glyphicons-halflings-regular.eot'));
 });
 
-app.get('/fb-icon', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'fb1.png'));
+app.get('/fonts/glyphicons-halflings-regular.svg', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'glyphicons-halflings-regular.svg'));
 });
 
-app.get('/utub-icon', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'you.png'));
+app.get('/fonts/glyphicons-halflings-regular.ttf', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'glyphicons-halflings-regular.ttf'));
 });
 
-app.get('/twitter-icon', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'twitter.png'));
+app.get('/fonts/glyphicons-halflings-regular.woff', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'glyphicons-halflings-regular.woff'));
 });
 
-app.get('/google-icon', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'google.png'));
+app.get('/fonts/JosefinSans-Regular.ttf', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'JosefinSans-Regular.ttf'));
 });
 
-app.get('/rss-icon', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui/images', 'rss.png'));
+app.get('/fonts/JosefinSans-SemiBold.ttf', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog/fonts/', 'JosefinSans-SemiBold.ttf'));
 });
 
-//blog page rendering function
-
-var blog = {
-  title : 'BLOG | SATHEESH KUMAR D',
-};
-
-function createblog(details){
-    var title = details.title;
-    var content = data.toString();
-
-    var blogtemplate =`
-      <!doctype html>
-          <html>
-
-          <head>
-              <link href="/ui/style.css" rel="stylesheet" />
-              <title>${title}</title>
-              <meta charset="UTF-8">
-              <meta http-equiv="X-UA-Compatible" content="IE=edge">
-              <meta name="author" content="Satheesh Kumar,http://www.facebook.com/satheesh1997">
-              <!-- <link rel="shortcut icon" href="./assets/images/clogo.gif" type="image/x-icon"> -->
-              <meta name="description" content=" I am Satheesh Kumar. This is my portfolio">
-              <meta name="theme-color" content="#ea713d">
-          </head>
-
-          <body>
-              <div class="nav nav-overlay">
-                  <p class="nav-head">BLOG
-                      <button class="nav-btn1" id="blog-btn">BLOG</button>
-                      <button class="nav-btn" id="about-btn">ABOUT</button>
-                      <button class="nav-btn" id="contact-btn">CONTACT</button>
-                  </p>
-              </div>
-              <div class="space"></div>
-              <div class="space"></div>
-              <div class="space"></div>
-          
-
-              <div class="container">      
-                  <div class="bio">
-                      <div class="overlay">
-                          <h4 class="mint center">POSTS</h4>
-                          <hr>
-                      </div>
-                  </div>
-                      <div class="space"></div>
-                  <div id="blog-post">
-                      ${content}
-                      <div class="space"></div>
 
 
-                  </div>
-              </div>
-
-
-              <div class="space"></div>
-              <div class=" copyright overlay">
-
-                  <h4 class="mint cptext">COPYRIGHT 2016 - 2017</h4>
-                  <p class="copy cptext">Satheesh Kumar D | Designed By Aplus Studios
-                  </p>
-                  <hr>
-              </div>
-
-              <script type="text/javascript" src="/ui/main.js"></script>
-              
-          </body>
-
-          </html>
-    `;
-    return blogtemplate;
-}
-
-app.get('/blog', function (req, res) {
-  res.send(createblog(blog));
+app.get('/', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
 
-var port = 8080; // Use 8080 for local development because you might already have apache running on 80
+
+//page show
+app.get('/page', function(req, res){
+  res.send('page_id: ' + req.query.id);
+});
+
+//user show
+app.get('/user/:id', function(req, res) {
+  res.send('user' + req.params.id);    
+});
+
+
+
+//if link not found
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog', '404.html'));
+});
+
+
+
+//Setting up server
+var port = 8080;
 app.listen(8080, function () {
-  console.log("IMAD course app listening on port " + port);
+  console.log("Satheesh Kumar's blog listening on port " + port);
 });
+

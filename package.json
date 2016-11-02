@@ -1,12 +1,17 @@
 {
-  "name": "imad-2016-base",
-  "version": "0.1.0",
-  "description": "IMAD 2016 course app",
+  "name": "satheesh_kumar's_blog",
+  "version": "1.0.0",
+  "description": "Satheesh Kumar the chief engineer of code hunt.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "keywords": [
+    "satheesh",
+    "kumar",
+    "satheesh1997"
+  ],
+  "author": "satheesh kumar",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
