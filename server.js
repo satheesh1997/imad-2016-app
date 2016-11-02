@@ -69,7 +69,7 @@ app.get('/user/:id', function(req, res) {
 
 //if link not found
 app.get('*', function (req, res) {
-  res.send(`<h1 align="center"> The Requested Page Is Not Found On The Server!</h1>`);
+  res.send(`<title>404 ERROR | Page Missing</title><h1 align="center"> The Requested Page Is Not Found On The Server!</h1>`);
 });
 
 
