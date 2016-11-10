@@ -17,11 +17,24 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
 
+//Creating Mysql Function
+var connection = mysql.createConnection({
+	host:'sql202.rf.gd',
+	user:'rfgd_19137621',
+	password:'vaioxloud',
+	database:'rfgd_19137621_Imad'
+});
 
 
 
-
-
+//Connecting to mysql database
+connection.connect(function(err){
+	if(!err)
+		console.log("\nConnection to mysql server successfull..\n");
+	else
+		console.log("\nError inconnecting to mysql server.."+err+"\n");
+		
+});
 
 
 //css routes
@@ -770,5 +783,4 @@ connection.end();
 });
 
 */
-
 
