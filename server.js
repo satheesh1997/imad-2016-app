@@ -17,13 +17,7 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
 
-//Creating Mysql Function
-var connection = mysql.createConnection({
-	host:'sql202.rf.gd',
-	user:'rfgd_19137621',
-	password:'vaioxloud',
-	database:'rfgd_19137621_Imad'
-});
+
 
 
 
