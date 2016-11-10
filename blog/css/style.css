@@ -1,0 +1,223 @@
+body {
+    font-family: sans-serif;
+    background-image: url("/images/bg.jpg");
+    background-attachment: fixed;
+    margin-top: 43px;
+    opacity: 0.5m;
+}
+.overlay{
+    background-color: black;
+    opacity: 0.7;
+    border-left: 2px solid rebeccapurple;
+    border-right: 2px solid rebeccapurple;
+    border-top: 2px solid rebeccapurple;
+}
+.center {
+    text-align: center;
+}
+
+.container{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.text-big {
+    font-size: 250%;
+    font-family: fantasy;
+}
+
+.bio {
+    color:white;
+    font-size: 150%;
+    font-family: fantasy;
+}
+
+.bold {
+    font-weight: bold;
+    color: white;
+}
+
+.underline {
+    font-weight: underline;
+}
+
+.img-medium {
+    height: 300px;
+    border-radius:50%;
+    border-left: 4px solid rebeccapurple;
+    border-right: 4px solid rebeccapurple;
+    border-top: 4px solid rebeccapurple;
+    border-bottom: 4px solid floralwhite;
+}
+.img-logo{
+    height: 80px;
+    border-radius:60%;
+    padding-right: 30px;
+}
+.footer{
+    color: ghostwhite;
+    font-size: 150%;
+    font-family: fantasy;
+}
+
+.list{
+    padding-bottom:4px;
+}
+
+a{
+    color:khaki;
+    font-family:sans-serif;
+    font-size:70%;
+}
+
+a::hover{
+    color:orangered;
+    font-family:sans-serif;
+    font-size:70%;
+}
+
+.orange{
+    color:orange;
+}
+
+.mint{
+    color:yellowgreen;
+}
+
+.space{
+    padding-top:30px;
+
+}
+
+.address{
+    font-family:monospace;
+    line-height: 40px;
+}
+
+.loader {
+    border-top: 3px solid blue;
+    border-bottom: 3px solid yellow;
+    border-right: 3px solid deeppink;
+    border-left: 3px solid orangered;
+    border-radius: 50%;
+    width: 220px;
+    height: 220px;
+    text-align: center;
+    margin-left: 537px;
+    margin-top: 99px;
+    animation: spin 6s linear infinite;
+}
+
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.input-box{
+    width: 250px;
+    height: 25px; 
+    border-radius: 5px;
+    font-family:monospace;
+    font-size:20px;
+    color:yellow;
+    border: 2px solid greenyellow;
+}
+
+.input-text{
+    width: 530px;
+    height: 250px; 
+    border-radius: 5px;
+    font-family:monospace;
+    font-size:20px;
+    color:yellow;
+    border: 2px solid greenyellow;
+}
+
+.post-btn{
+    width:180px;
+    height:40px;
+    border-radius: 5px;
+    color:yellowgreen;
+    font-family:monospace;
+    font-size:20px;
+    font-weight: bold;
+    background-color: darkblue;
+    cursor: pointer;
+}
+
+.form{
+    margin-left:20px;
+}
+
+.username{
+    font-size: 15px;
+    font-weight: lighter;
+    color:yellow;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.comment{
+    font-size: 15px;
+    font-family: monospace;
+    color:hotpink;
+}
+
+
+.loader2 {
+    border-top: 3px dashed blue;
+    border-bottom: 3px dashed yellow;
+    border-right: 3px dashed deeppink;
+    border-left: 3px dashed orangered;
+    border-radius: 50%;
+    width: 176px;
+    height: 176px;
+    text-align: center;
+    margin-left: 558px;
+    margin-top: -202px;
+    animation: spin 3s linear infinite;
+}
+
+.loader3 {
+    border-top: 3px solid blue;
+    border-bottom: 3px solid yellow;
+    border-right: 3px solid deeppink;
+    border-left: 3px solid orangered;
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    text-align: center;
+    margin-left: 581px;
+    margin-top: -159px;
+    animation: spin 6s linear infinite; 
+}
+
+.loader4 {
+    border-top: 3px dashed blue;
+    border-bottom: 3px dashed yellow;
+    border-right: 3px dashed deeppink;
+    border-left: 3px dashed orangered;
+    border-radius: 50%;
+    width: 68px;
+    height: 68px;
+    text-align: center;
+    margin-left: 616px;
+    margin-top: -105px;
+    animation: spin 1s linear infinite;
+}
+
+.copyright{
+    color: darkorange;
+    font-size: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: -10px;
+    margin-right: -5px;
+}
+
+.cptext{
+    margin-left: 100px;
+}
+
+

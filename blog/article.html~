@@ -1,0 +1,143 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <script>
+            document.title="Tech Hunt";
+        </script>
+        <noscript> JavaScript Is Not Enabled On Browser </noscript>
+    <!-- Stylesheet -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-social.css" rel="stylesheet">
+        <link href="./css/font-awesome.css" rel="stylesheet">
+    <!-- Stylesheet added -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/typeahead.min.js"></script>
+    <!-- meta tags -->
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+
+    <!-- meta end -->
+    <!-- Authors Fonts -->
+        <style>
+            @font-face {
+                font-family: sat;
+                src: url(./fonts/JosefinSans-Regular.ttf);
+            }
+            @font-face {
+                font-family: satbold;
+                src: url(./fonts/JosefinSans-SemiBold.ttf);
+            }
+            .brand:hover{
+                border-bottom:3px solid crimson;
+            }
+            .src_btn:hover{
+                cursor:pointer;
+            }
+            .alink{
+                border-bottom:3px solid black;
+                border-right:1px solid grey;
+            }
+            .brand{
+                border-right:1px solid grey;
+            }
+            .typeahead, .tt-query, .tt-hint {
+                
+                font-size: 14px;
+                padding: 8px;
+            }
+            .typeahead {
+                background-color: #FFFFFF;
+            }
+            .typeahead:focus {
+                border: 2px solid #0097CF;
+            }
+            .tt-query {
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+            }
+            .tt-hint {
+                color: #999999;
+            }
+            .tt-dropdown-menu {
+                background-color: #FFFFFF;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                margin-top: 12px;
+                padding: 8px 0;
+            }
+            .tt-suggestion {
+                font-size: 14px;
+                line-height: 24px;
+                padding: 3px 20px;
+                width:200px;
+            }
+            .tt-suggestion.tt-is-under-cursor {
+                background-color: #0097CF;
+                color: #FFFFFF;
+            }
+            .tt-suggestion p {
+                margin: 0;
+            }
+            .margin-sm{
+            	margin-top:0px;
+    		}
+        </style>
+    </head>
+<body  style="font-family:sat;background:gainsboro;">
+
+<nav id="nav" class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" style="background:white;box-shadow: -4px 1px 12px #888888;">
+            <ul class="nav navbar-nav text-center" style="font-family:satbold; font-size:15px;">
+                <li class="brand"><a href="/" style=" padding-left:70px; padding-right:70px;">
+                <span class="fa fa-home" aria-hidden="true"></span>&nbsp;HOME</a></li>
+                <li></li>
+                <li>
+                <a class="alink" href="./articles"  style=" padding-left:70px; padding-right:70px;">
+                <span class="fa fa-book" aria-hidden="true"></span>&nbsp;ARTICLES</a></li>
+                <li></li>
+                <li><a class="brand" href="#team_info"  style=" padding-left:70px; padding-right:70px;">
+                <span class="fa fa-users" aria-hidden="true"></span>&nbsp;TEAM</a></li>
+                <li></li>
+                <li><a class="brand" href="/techhunt"  style=" padding-left:70px;  padding-right:70px;">
+                <span class="fa fa-phone" aria-hidden="true"></span>&nbsp;HELP & SUPPORT</a></li>
+                </ul>
+            	<form class="navbar-form navbar-right" role="search">
+                <!-- search script -->
+                    <script>
+                        $(document).ready(function(){
+                             $('input.typeahead').typeahead({
+                                    name: 'typeahead',
+                                    remote:'/search?key=%QUERY',
+                                    limit : 10
+                            });
+                        });
+                        function search(){
+                            console.log("Search Btn Clicked");
+                        }
+                    </script>
+                <!-- search script end -->
+                <div class="input-group"  style="font-family:satbold; font-size:25px;">
+                    <input type="text" name="typeahead" class="typeahead form-control" autocomplete="off" spellcheck="false" placeholder="Keyword..">
+                    <div class="input-group-addon src_btn"onclick="search()">
+                        <span class="fa fa-search" aria-hidden="true"></span>
+                    </div>
+                </div>
+                
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</body>
+</html>

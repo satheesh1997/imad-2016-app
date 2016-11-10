@@ -172,7 +172,7 @@
 			document.getElementById("nav_name").innerHTML=" ";
 		}
 	}
-	setInterval(check_nav,500);
+	setInterval(check_nav,1000);
 	</script>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
