@@ -27,14 +27,7 @@ var connection = mysql.createConnection({
 
 
 
-//Connecting to mysql database
-connection.connect(function(err){
-	if(!err)
-		console.log("\nConnection to mysql server successfull..\n");
-	else
-		console.log("\nError inconnecting to mysql server.."+err+"\n");
-		
-});
+
 
 
 //css routes
