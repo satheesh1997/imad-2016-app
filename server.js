@@ -153,7 +153,7 @@ app.get('/articlebyname/:title', function(req, res){
 });
 
 app.get('/register', function(req, res){
-  res.send(registerpage( ));
+  res.send(registerpage());
 });
 
 //search keyword function
