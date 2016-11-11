@@ -58,10 +58,10 @@ function loadtrends(){
 		`;
             } else {
                 t1.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
-		t2.innerHTML="ERROR LOADING....";
-		t3.innerHTML="ERROR LOADING....";
-		t4.innerHTML="ERROR LOADING....";
-		t5.innerHTML="ERROR LOADING....";
+		t2.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
+		t3.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
+		t4.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
+		t5.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
             }
         }
     };
