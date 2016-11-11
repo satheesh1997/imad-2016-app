@@ -17,14 +17,27 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
 
-//Creating Mysql Function
+
+
+//Server mysql connection
 var connection = mysql.createConnection({
-	host:'db4free.net',
-	user:'satheesh',
-	password:'vaioxloud12345',
-	database:'imad'
+	host:'sql202.rf.gd',
+	user:'rfgd_19137621',
+	password:'vaioxloud',
+	database:'rfgd_19137621_Imad'
 });
 
+
+
+/*
+//local mysql connection
+var connection = mysql.createConnection({
+	host:'localhost',
+	user:'root',
+	password:'vaioxloud',
+	database:'IMAD'
+});
+*/
 
 
 //Connecting to mysql database
@@ -32,23 +45,27 @@ connection.connect(function(err){
 	if(!err)
 		console.log("\nConnection to mysql server successfull..\n");
 	else
-		console.log("\nError inconnecting to mysql server.."+err+"\n");
+		console.log("\nError in connecting to mysql server.."+err+"\n");
 		
 });
+
 
 
 //css routes
 app.get('/css/:stylesheet', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/css', req.params.stylesheet));
 });
+
 //font routes
 app.get('/fonts/:font', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/fonts', req.params.font));
 });
+
 //js routes
 app.get('/js/:script', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/js', req.params.script));
 });
+
 //image routes
 app.get('/images/:image', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/images', req.params.image));
@@ -61,14 +78,19 @@ app.get('/', function(req, res){
 app.get('/help.html', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'hp.html'));
 });
+
+//help page
 app.get('/techhunt', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'hp.html'));
 });
 
+//author
 app.get('/satheesh1997', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'profile.html'));
 });
 
+
+//articles route
 app.get('/articles', function(req, res){
 	var content="";
 	var template="";
@@ -87,71 +109,78 @@ app.get('/articles', function(req, res){
       }
    });
 });
+
+//article byname route
 app.get('/articlebyname/Articles%20List', function(req, res){
 	var content="";
 	var template="";
 	var j=1;
 	connection.query("SELECT * FROM article ORDER BY id DESC", function (err, rows, fields) {
-      if (err) {
-          res.status(500).send(err.toString());
-      } else {
-      	for (var i in rows) {
-  		template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
-  		<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
-        	content=content+template;
-        	j=j+1;
-    	}
-	res.send(createTemplate(content));
-      }
+		if (err) {
+			res.status(500).send(err.toString());
+		} else {
+			for (var i in rows) {
+				template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
+				<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
+		  	content=content+template;
+		  	j=j+1;
+			}
+			res.send(createTemplate(content));
+		}
    });
 });
 
+
+//article id route
 app.get('/article/:id', function(req, res){
 	var article_id=req.params.id;
 	var num=0;
-	var sql    = 'SELECT * FROM article WHERE id = ' + connection.escape(article_id);
+	var sql='SELECT * FROM article WHERE id = ' + connection.escape(article_id);
 	connection.query(sql, function (err, rows, fields) {
-      	if (err) {
-        	res.status(500).send(err.toString());
-      	} else {
-	      	for (var i in rows) {
-	  		num++;
-		}
-		if(num >0){
-	      		sql='UPDATE article SET views=views+1 WHERE id='+article_id;
-	      		connection.query(sql,function(err,results){
-			});
-			res.send(createarticle(rows[0]));
-		}else{
-			res.sendFile(path.join(__dirname, 'blog', '404.html'));
-		}
-	
-      }
-   });
-});
-app.get('/articlebyname/:title', function(req, res){
-	var article_id=req.params.title;
-	var num=0;
-		var sql    = 'SELECT * FROM article WHERE title = ' + connection.escape(article_id);
-		connection.query(sql, function (err, rows, fields) {
-		       if (err) {
+			if (err) {
 				res.status(500).send(err.toString());
-		       } else {
-			      for (var i in rows) {
-		  		num++;
-			      }
-			      	if(num > 0){
-		      			sql='UPDATE article SET views=views+1 WHERE title='+article_id;
-	      				connection.query(sql,function(err,results){
-					});
+			} else {
+				for (var i in rows) {
+					num++;
+				}
+				if(num >0){
+					sql='UPDATE article SET views=views+1 WHERE id='+article_id;
+		  		connection.query(sql,function(err,results){ });
 					res.send(createarticle(rows[0]));
 				}else{
 					res.sendFile(path.join(__dirname, 'blog', '404.html'));
 				}
-		    }
-   		});
+	
+		  }
+   });
 });
 
+
+//article by name
+app.get('/articlebyname/:title', function(req, res){
+	var article_id=req.params.title;
+	var num=0;
+	var sql='SELECT * FROM article WHERE title = ' + connection.escape(article_id);
+	connection.query(sql, function (err, rows, fields) {
+	 	if (err) {
+			res.status(500).send(err.toString());
+		 } else {
+				for (var i in rows) {
+				num++;
+		    }
+		  	if(num > 0){
+					sql='UPDATE article SET views=views+1 WHERE title='+article_id;
+					connection.query(sql,function(err,results){ });
+					res.send(createarticle(rows[0]));
+				}else{
+					res.sendFile(path.join(__dirname, 'blog', '404.html'));
+				}
+		  }
+ 		});
+});
+
+
+//register page route
 app.get('/register', function(req, res){
   res.send(registerpage());
 });
@@ -160,50 +189,50 @@ app.get('/register', function(req, res){
 app.get('/search', function (req, res) {
   var key=req.query.key;
   var titles='["Articles List';
-  connection.query("SELECT title FROM article WHERE title LIKE '%"+key+"%'", function (err, rows, fields) {
-  	if (err) throw err;
+	connection.query("SELECT title FROM article WHERE title LIKE '%"+key+"%'", function (err, rows, fields) {
+		if (err) throw err;
   	for (var i in rows) {
-  		if(i>=0)
-        	titles=titles+'","'+rows[i].title;
-    	}
-    	if(!err){
-    		res.send(titles+'"]');
-	}
+			if(i>=0)
+    		titles=titles+'","'+rows[i].title;
+		}
+  	if(!err){
+			res.send(titles+'"]');
+		}
   });
 });
 
+//checker_email route
 app.get('/checker_email', function (req, res) {
   var key=req.query.email;
   var mail=null;
-  var sql    = 'SELECT mail FROM user WHERE mail = ' + connection.escape(key);
+  var sql='SELECT mail FROM user WHERE mail = ' + connection.escape(key);
   connection.query(sql, function (err, rows, fields) {
 		if (err) throw err;
 		for (var i in rows) {
-	  		if(i>=0)
-			mail=mail+rows[i].mail;
-    		}
-    		if(mail != null){
-    			res.status(400).send(mail);
+			if(i>=0)
+				mail=mail+rows[i].mail;
+		}
+		if(mail != null){
+			res.status(400).send(mail);
 		}
 		else{
-		       res.status(200).send(mail);
-	       }
+       res.status(200).send(mail);
+   	}
     		
   });
 });
 
+//subscribe route
 app.get('/subscribe', function (req, res) {
   var email=req.query.email;
   if(email.length>2){
-	  var sql    = "INSERT INTO subscribers (email) VALUES ("+connection.escape(email)+")";
+	  var sql="INSERT INTO subscribers (email) VALUES ("+connection.escape(email)+")";
 	  connection.query(sql, function (err, rows, fields) {
 			if (err){
 				res.status(500).send(err.toString());
-			 	throw err;
 		 	}else{
 		 		res.status(200).send("SuccessFully Subcribed...");
 	 		}
-	    		
 	  });
   }
   else{
@@ -211,15 +240,18 @@ app.get('/subscribe', function (req, res) {
   }
 });
 
+//get-trends route
 app.get('/get-trends', function (req, res) {
    connection.query("SELECT * FROM article ORDER BY views DESC", function (err, rows, fields) {
       if (err) {
-          res.status(500).send(err.toString());
+      	res.status(500).send(err.toString());
       } else {
-          res.send(JSON.stringify(rows));
+      	res.send(JSON.stringify(rows));
       }
    });
 });
+
+//create user route
 app.post('/create-user', function (req, res) {
    var username = req.body.username;
    var password = req.body.password;
@@ -235,6 +267,8 @@ app.post('/create-user', function (req, res) {
       }
    });
 });
+
+//login route
 app.post('/login', function (req, res) {
    var lemail = req.body.email;
    var lpassword = req.body.password;
@@ -242,50 +276,51 @@ app.post('/login', function (req, res) {
    var sql = 'SELECT * FROM user WHERE mail = ' + connection.escape(lemail);
    connection.query(sql, function (err, rows, fields) {
       if (err) {
-          res.status(500).send(err.toString());
+      	res.status(500).send(err.toString());
       } else {
-      		for (var i in rows) {
+  			for (var i in rows) {
 	  		num++;
-		}
-          if (num == 0) {
-              res.status(403).send('Email/password is invalid');
-          } else {
-              var dbString = rows[0].password;
-              var salt = dbString.split('$')[2];
-              var hashedPassword = hash(lpassword, salt);
-              if (hashedPassword === dbString) {
-                req.session.auth = {userId:rows[0].id};
-                res.send('credentials correct!');
-              } else {
-                res.status(403).send('Email/password is invalid');
-              }
-          }
+				}
+        if (num == 0) {
+        	res.status(403).send('Email/password is invalid');
+        } else {
+		      var dbString = rows[0].password;
+		      var salt = dbString.split('$')[2];
+		      var hashedPassword = hash(lpassword, salt);
+		      if (hashedPassword === dbString) {
+		        req.session.auth = {userId:rows[0].id};
+		        res.send('credentials correct!');
+		      } else {
+		        res.status(403).send('Email/password is invalid');
+		      }
+        }
       }
    });
 });
 
+//check login route
 app.get('/check-login', function (req, res) {
    if (req.session && req.session.auth && req.session.auth.userId) {
-       // Load the user object
-       var sql="SELECT * FROM user WHERE id ="+req.session.auth.userId;
-       connection.query(sql, function (err, rows, fields) {
-           if (err) {
-              res.status(500).send(err.toString());
-           } else {
-              res.send(rows[0].username);    
-           }
-       });
-   } else {
-       res.status(400).send('You are not logged in');
-   }
+			var sql="SELECT * FROM user WHERE id ="+req.session.auth.userId;
+     	connection.query(sql, function (err, rows, fields) {
+     		if (err) {
+    			res.status(500).send(err.toString());
+       	} else {
+        	res.send(rows[0].username);    
+       	}
+     	});
+		} else {
+ 			res.status(400).send('You are not logged in');
+ 		}
 });
 
+//logout route
 app.get('/logout', function (req, res) {
    delete req.session.auth;
    res.sendFile(path.join(__dirname, 'blog', 'index.html'));
 });
 
-//if link not found
+//if route not found
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog', '404.html'));
 });
@@ -295,8 +330,6 @@ function hash (input, salt) {
     var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');
     return ["pbkdf2", "10000", salt, hashed.toString('hex')].join('$');
 }
-
-
 
 //articles function
 function createTemplate (data) {
@@ -383,7 +416,7 @@ function createTemplate (data) {
 			    }
 			</style>
 		    </head>
-		<body  style="font-family:sat;background:url(/images/bg.jpg);background-attachment: fixed;">
+		<body  style="font-family:sat;background:#4a50b5;">
 		    <!-- background:darkorchid; -->
 		    
 		    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -447,7 +480,7 @@ function createTemplate (data) {
 		    </nav>
 
 		    
-		    <div class="container" style="margin-top:100px;">
+		    <div class="container" style="margin-top:100px;height:700px;">
 
 			<div id="login">
 			    
@@ -461,10 +494,14 @@ function createTemplate (data) {
 			</div>
 	
 		   </div>
-		    <div style="background:black;padding:10px;color:white;margin-top:30px;">
-        	<p class="lead text-right">&copy;Satheesh Kumar D</p>
+	   
+		 
+	 <div class="col-lg-12" style="background:black;padding-top:20px;padding-bottom:20px;color:white;font-size:15px;margin-top:10px;">
+        	<p class="text-center"><span class="fa fa-copyright"></span>&nbsp;Satheesh Kumar 2016-17</p>
+        	<p class="text-center">Made in <span class="fa fa-heart"></span>&nbsp;India</p>
 	</div>
 		</body>
+		 
 		    <!-- Javascripts -->
 		    <script src="/js/bootstrap.min.js"></script>
 		    
@@ -637,64 +674,67 @@ function createarticle(info){
     		}
         </style>
     </head>
-<body  style="font-family:sat;background:url(/images/bg.jpg);background-attachment: fixed;">
+<body  style="font-family:sat;background:#4a50b5;">
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            
-            
-        </div>
-    
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse" style="background:white;box-shadow: -4px 1px 12px #888888;">
-            <ul class="nav navbar-nav text-center" style="font-family:satbold; font-size:15px;">
-                <li class="brand"><a href="/" style=" padding-left:70px; padding-right:70px;">
-                <span class="fa fa-home" aria-hidden="true"></span>&nbsp;HOME</a></li>
-                <li></li>
-                <li>
-                <a class="alink" href="/articles"  style=" padding-left:70px; padding-right:70px;">
-                <span class="fa fa-book" aria-hidden="true"></span>&nbsp;ARTICLES</a></li>
-                <li></li>
-                <li><a class="brand" href="#team_info"  style=" padding-left:70px; padding-right:70px;">
-                <span class="fa fa-users" aria-hidden="true"></span>&nbsp;USERS</a></li>
-                <li></li>
-                <li><a class="brand" href="/techhunt"  style=" padding-left:60px;  padding-right:60px;">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+			    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			    </button>
+
+			    <a href="/" class="navbar-brand" style="margin-right:70px;font-family:satbold; font-size:25px;">
+				<span class="fa fa-home" aria-hidden="true"></span>&nbsp;TECH HUNT</a>
+			</div>
+		    
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse" style="background:white;box-shadow: -4px 1px 12px #888888;">
+			    <ul class="nav navbar-nav text-center" style="font-family:satbold; font-size:15px;">
+				<li class="brand"></li>
+				<li></li>
+				<li>
+				<a class="active alink" href="#"  style=" padding-left:70px; padding-right:70px;border-left:1px solid black;">
+				<span class="fa fa-book" aria-hidden="true"></span>&nbsp;ARTICLES</a></li>
+				<li></li>
+				<li><a class="brand" href="/users"  style=" padding-left:70px; padding-right:70px;">
+				<span class="fa fa-users" aria-hidden="true"></span>&nbsp;USERS</a></li>
+				<li></li>
+				<li><a class="brand" href="/techhunt"  style=" padding-left:60px;  padding-right:60px;">
                 <span class="fa fa-phone" aria-hidden="true"></span>&nbsp;HELP & SUPPORT</a></li>
                 <li></li>
                 <li id="logout"></li>
-            	<form class="navbar-form navbar-right" role="search">
-                <!-- search script -->
-                    <script>
-                        $(document).ready(function(){
-                             $('input.typeahead').typeahead({
-                                    name: 'typeahead',
-                                    remote:'/search?key=%QUERY',
-                                    limit : 10
-                            });
-                        });
-                        function search(){
-                        	var keyword=document.getElementById("sterm").value;
-                            window.location="/articlebyname/"+keyword;
-                        }
-                    </script>
-                <!-- search script end -->
-                <div class="input-group"  style="font-family:satbold; font-size:25px;">
-                    <input type="text" name="typeahead" id="sterm" class="typeahead form-control" autocomplete="off" spellcheck="false" placeholder="Keyword..">
-                    <div class="input-group-addon src_btn"onclick="search()">
-                        <span class="fa fa-search" aria-hidden="true"></span>
-                    </div>
-                </div>
-                
-            </form>
-        </div><!-- /.navbar-collapse -->
-    </nav>
+			    </ul>
+			    <form class="navbar-form navbar-right" role="search">
+			
+				<div class="input-group"  style="font-family:satbold; font-size:25px;">
+				<!-- search script -->
+				    <script>
+					$(document).ready(function(){
+					     $('input.typeahead').typeahead({
+					            name: 'typeahead',
+					            remote:'/search?key=%QUERY',
+					            limit : 10
+					    });
+					});
+					function search(){
+					   	var keyword=document.getElementById("sterm").value;
+                    				window.location="/articlebyname/"+keyword;
+					}
+				    </script>
+				<!-- search script end -->
+				    <input type="text" name="typeahead" id="sterm" class="typeahead form-control" autocomplete="off" spellcheck="false" placeholder="Keywords to search article..">
+				    <div class="input-group-addon src_btn"onclick="search()">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+				    </div>
+				</div>
+			
+			    </form>
+			    
+			</div><!-- /.navbar-collapse -->
+		    </nav>
     
     <div class="container" style="margin-top:100px;">
         
@@ -718,7 +758,30 @@ function createarticle(info){
             </div>
             <div class="col-lg-9" style="background:white;padding:40px;margin-left:15px;margin-right:15px;margin-top:50px;">
                 
-                <p><div id="disqus_thread"></div></p>
+             <div class="form-group col-md-6" style="margin-top:30px;">
+						<legend>COMMENTS</legend>
+						<textarea name="" id="comment" class="form-control" rows="3" required="required" placeholder="Enter your comments..."></textarea>
+						<p class="text-right" style="margin-top:20px;"><button id="comment_btn" type="submit" class="btn btn-md btn-primary">COMMENT</button></p>
+						
+						<div class="media" style="padding:5px;border-left:2px solid crimson;">
+							<a class="pull-left" href="/satheesh1997">
+								<img class="media-object" src="/images/photo.jpg" alt="Image" width="50px";>
+							</a>
+							<div class="media-body">
+								<a href="/satheesh1997"><h4 class="media-heading" style="margin-top:5px;">Satheesh Kumar D</h4></a>
+								<p>Nice post..</p>
+							</div>
+							<hr style="border-top:1px solid grey;">
+							<a class="pull-left" href="/satheesh1997">
+								<img class="media-object" src="/images/photo.jpg" alt="Image" width="50px";>
+							</a>
+							<div class="media-body">
+								<a href="/satheesh1997"><h4 class="media-heading" style="margin-top:5px;">Satheesh Kumar D</h4></a>
+								<p>Nice post..</p>
+							</div>
+						</div>
+						
+					</div>
             </div>
             
             
@@ -726,10 +789,7 @@ function createarticle(info){
         
     </div>
   <script>
-
-			/**
-			*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-			*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+	
 			
 			var disqus_config = function () {
 			this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
@@ -743,8 +803,9 @@ function createarticle(info){
 			})();
 			</script>
 			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>  
-        <div style="background:black;padding:10px;color:white;margin-top:30px;">
-        	<p class="lead text-right">&copy;Satheesh Kumar D</p>
+        <div class="col-lg-12" style="background:black;padding-top:20px;padding-bottom:20px;color:white;font-size:15px;margin-top:10px;">
+        	<p class="text-center"><span class="fa fa-copyright"></span>&nbsp;Satheesh Kumar 2016-17</p>
+        	<p class="text-center">Made in <span class="fa fa-heart"></span>&nbsp;India</p>
 	</div>
 </body>
 <script src="/js/bootstrap.min.js"></script>
@@ -759,28 +820,3 @@ var port = 8080;
 app.listen(8080, function () {
   console.log("Satheesh Kumar's blog listening on port " + port);
 });
-
-
-/*
-
-//page show
-app.get('/page', function(req, res){
-  res.send('page_id: ' + req.query.id);
-});
-
-//user show
-app.get('/user/:id', function(req, res) {
-  res.send('user' + req.params.id);    
-});
-app.get("/users",function(req,res){
-connection.query('SELECT * from user LIMIT 2', function(err, rows, fields) {
-connection.end();
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
-  });
-});
-
-*/
-
