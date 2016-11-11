@@ -57,7 +57,7 @@ function loadtrends(){
                     	<p class="text-right text-primary"><a href="/article/${trends[4].id}">More>>></a></p>
 		`;
             } else {
-                t1.innerHTML="ERROR LOADING....";
+                t1.innerHTML=`<p class="text-center text-danger">ERROR IN LOADING</p>`;
 		t2.innerHTML="ERROR LOADING....";
 		t3.innerHTML="ERROR LOADING....";
 		t4.innerHTML="ERROR LOADING....";
