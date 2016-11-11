@@ -19,10 +19,10 @@ app.use(session({
 
 //Creating Mysql Function
 var connection = mysql.createConnection({
-	host:'sql202.rf.gd',
-	user:'rfgd_19137621',
-	password:'vaioxloud',
-	database:'rfgd_19137621_Imad'
+	host:'db4free.net',
+	user:'satheesh1',
+	password:'vaioxloud12345',
+	database:'imad'
 });
 
 
