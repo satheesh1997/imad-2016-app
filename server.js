@@ -20,7 +20,7 @@ app.use(session({
 //Creating Mysql Function
 var connection = mysql.createConnection({
 	host:'db4free.net',
-	user:'satheesh1',
+	user:'satheesh',
 	password:'vaioxloud12345',
 	database:'imad'
 });
