@@ -431,7 +431,7 @@ function createTemplate (data) {
 			    }
 			</style>
 		    </head>
-		<body  style="font-family:sat;background:#4a50b5;">
+		<body  style="font-family:sat;background:#3b5998;">
 		    <!-- background:darkorchid; -->
 		    
 		    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -689,7 +689,7 @@ function createarticle(info){
     		}
         </style>
     </head>
-<body  style="font-family:sat;background:#4a50b5;">
+<body  style="font-family:sat;background:#3b5998;">
 
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -919,7 +919,7 @@ function errorpage(data){
 		</style>
 	</head>
 
-	<body  style="font-family:sat;background:#4a50b5;">
+	<body  style="font-family:sat;background:#3b5998;">
 
 	    <div class="container" style="color:white;margin-top:100px;">
 	        <p class="text-center" style="font-size:200px;"><span class="fa fa-warning"></span></p>
