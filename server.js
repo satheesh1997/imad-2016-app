@@ -2,12 +2,19 @@
 var express = require("express");
 var morgan = require("morgan");
 var path = require("path");
-var mysql = require("mysql");
+var Pool = require('pg').Pool;
 var crypto = require("crypto");
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var app=express();
 
+var config = {
+    user: 'satheesh1997',
+    database: 'satheesh1997',
+    host: 'db.imad.hasura-app.io',
+    port: '5432',
+    password: process.env.DB_PASSWORD
+};
 
 //Package Initialitation functions
 app.use(morgan('combined'));
@@ -16,36 +23,6 @@ app.use(session({
     secret: 'someRandomSecretValue',
     cookie: { maxAge: 1000 * 60 * 60 * 24 * 30}
 }));
-
-
-//Server mysl connection
-var connection = mysql.createConnection({
-	host:'sql202.rf.gd',
-	user:'rfgd_19137621',
-	password:'vaioxloud',
-	database:'rfgd_19137621_Imad'
-});
-
-/*/local mysql connection
-var connection = mysql.createConnection({
-	host:'localhost',
-	user:'root',
-	password:'vaioxloud',
-	database:'IMAD'
-});
-
-*/
-
-//Connecting to mysql database
-connection.connect(function(err){
-	if(!err)
-		console.log("\nConnection to mysql server successfull..\n");
-	else
-		console.log("\nError in connecting to mysql server.."+err+"\n");
-		
-});
-
-
 
 //css routes
 app.get('/css/:stylesheet', function (req, res) {
@@ -95,13 +72,13 @@ app.get('/articles', function(req, res){
 	var content="";
 	var template="";
 	var j=1;
-	connection.query("SELECT * FROM article ORDER BY id DESC", function (err, rows, fields) {
+	pool.query("SELECT * FROM article",function (err, result){
       if (err) {
           res.status(500).send(err.toString());
       } else {
-      	for (var i in rows) {
-  			template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
-  			<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
+      	for (var i=0;i<result.rows.length;i++) {
+  			template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${result.rows[i].id}">${result.rows[i].title}</a></div>
+  			<div class="text-primary text-right" style="margin-top:-20px;">${result.rows[i].views}&nbsp;VIEWS</div><hr>`;
         	content=content+template;
         	j=j+1;
     	}
@@ -114,15 +91,15 @@ app.get('/articles', function(req, res){
 app.get('/showusers', function(req, res){
 	var content="";
 	var template="";
-	connection.query("SELECT * FROM user ORDER BY id DESC", function (err, rows, fields) {
+	pool.query('SELECT * FROM "user" ORDER BY id DESC', function (err, result) {
       if (err) {
           res.status(500).send(err.toString());
       } else {
-      	for (var i in rows) {
+      	for (var i=0;i<result.rows.length;i++) {
   			template=`<tr>
-                        <td>${rows[i].id}</td>
-                    	<td>${rows[i].username}</td>
-                        <td>${rows[i].mail}</td>
+                        <td>${result.rows[i].id}</td>
+                    	<td>${result.rows[i].username}</td>
+                        <td>${result.rows[i].mail}</td>
                     </tr>`;
         	content=content+template;
     	}
@@ -136,13 +113,13 @@ app.get('/articlebyname/Articles%20List', function(req, res){
 	var content="";
 	var template="";
 	var j=1;
-	connection.query("SELECT * FROM article ORDER BY id DESC", function (err, rows, fields) {
+	pool.query("SELECT * FROM article ORDER BY id DESC", function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
 		} else {
-			for (var i in rows) {
-				template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
-				<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
+			for (var i=0;i<result.rows.length;i++) {
+				template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${result.rows[i].id}">${result.rows[i].title}</a></div>
+				<div class="text-primary text-right" style="margin-top:-20px;">${result.rows[i].views}&nbsp;VIEWS</div><hr>`;
 		  		content=content+template;
 		  		j=j+1;
 			}
@@ -154,22 +131,15 @@ app.get('/articlebyname/Articles%20List', function(req, res){
 
 //article id route
 app.get('/article/:id', function(req, res){
-	var article_id=req.params.id;
-	var num=0;
-	var sql='SELECT * FROM article WHERE id = ' + connection.escape(article_id);
-	connection.query(sql, function (err, rows, fields) {
+	pool.query("SELECT * FROM article WHERE id = $1", [req.params.id], function (err, result)  {
 			if (err) {
 				res.status(500).send(err.toString());
 			} else {
-				for (var i in rows) {
-					num++;
-				}
-				if(num >0){
-					sql='UPDATE article SET views=views+1 WHERE id='+article_id;
-		  		connection.query(sql,function(err,results){ });
-					res.send(createarticle(rows[0]));
-				}else{
+				if(result.rows.length === 0){
 					res.send(errorpage("The Requested Article Is Not Found On The Server"));
+				}else{
+		  			pool.query('UPDATE article SET views=views+1 WHERE id =$1',[req.params.id],function(err,result){ });
+					res.send(createarticle(result.rows[0]));
 				}
 	
 		  }
@@ -179,22 +149,15 @@ app.get('/article/:id', function(req, res){
 
 //article by name
 app.get('/articlebyname/:title', function(req, res){
-	var article_id=req.params.title;
-	var num=0;
-	var sql='SELECT * FROM article WHERE title = ' + connection.escape(article_id);
-	connection.query(sql, function (err, rows, fields) {
+	pool.query('SELECT * FROM article WHERE title = $1', [req.params.title], function (err, result) {
 	 	if (err) {
 			res.status(500).send(err.toString());
 		} else {
-				for (var i in rows) {
-				num++;
-		    }
-		  	if(num > 0){
-					sql='UPDATE article SET views=views+1 WHERE title='+article_id;
-					connection.query(sql,function(err,results){ });
-					res.send(createarticle(rows[0]));
+		  	if(result.rows.length === 0){
+		  			res.send(errorpage("The Requested Article Is Not Found On The Server"));
 				}else{
-					res.send(errorpage("The Requested Article Is Not Found On The Server"));
+					pool.query("UPDATE article SET views=views+1 WHERE id =$1",[result.rows[0].id],function(err,result){ });
+					res.send(createarticle(result.rows[0]));
 				}
 		 }
  	});
@@ -208,38 +171,33 @@ app.get('/register', function(req, res){
 
 //search keyword function
 app.get('/search', function (req, res) {
-  	var key=req.query.key;
   	var titles='["Articles List';
-	connection.query("SELECT title FROM article WHERE title LIKE '%"+key+"%'", function (err, rows, fields) {
-		if (err) throw err;
-	  	for (var i in rows) {
-				if(i>=0)
-	    		titles=titles+'","'+rows[i].title;
-		}
-	  	if(!err){
-				res.send(titles+'"]');
+	pool.query('SELECT title FROM article WHERE title LIKE '%$1%'',[reg.query.key], function (err, result) {
+		if (err) {
+			res.status(500).send(err.toString());
+		} else {
+	  		for(var i=0;i<result.rows.length;i++) {
+	    		titles=titles+'","'+result.rows[i].title;
+			}
+			res.send(titles+'"]');
 		}
   	});
 });
 
 //checker_email route
 app.get('/checker_email', function (req, res) {
-  var key=req.query.email;
   var mail=null;
-  var sql='SELECT mail FROM user WHERE mail = ' + connection.escape(key);
-  connection.query(sql, function (err, rows, fields) {
-		if (err) throw err;
-		for (var i in rows) {
-			if(i>=0)
-				mail=mail+rows[i].mail;
-		}
-		if(mail != null){
-			res.status(400).send(mail);
-		}
-		else{
-       		res.status(200).send(mail);
-   	}
-    		
+  pool.query('SELECT * FROM "user" WHERE mail = $1',[req.query.email], function (err, result) {
+		if (err) {
+			res.status(500).send(err.toString());
+		} else {
+			if(result.rows.length == 0){
+				res.status(400).send(req.query.email);
+			}
+			else{
+				res.status(200).send(result.rows[0].mail);
+			}
+		}	
   });
 });
 
@@ -247,8 +205,7 @@ app.get('/checker_email', function (req, res) {
 app.get('/subscribe', function (req, res) {
   	var email=req.query.email;
   	if(email.length>2){
-	  	var sql="INSERT INTO subscribers (email) VALUES ("+connection.escape(email)+")";
-	  	connection.query(sql, function (err, rows, fields) {
+	  	pool.query('INSERT INTO subscribers (email) VALUES ($1)', [req.query.email], function (err, result){
 			if (err){
 				res.status(500).send(err.toString());
 		 	}else{
@@ -263,11 +220,11 @@ app.get('/subscribe', function (req, res) {
 
 //get-trends route
 app.get('/get-trends', function (req, res) {
-   	connection.query("SELECT * FROM article ORDER BY views DESC", function (err, rows, fields) {
+   	pool.query("SELECT * FROM article ORDER BY views DESC", function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
 		} else {
-			res.send(JSON.stringify(rows));
+			res.send(JSON.stringify(result.rows));
 		}
 	});
 });
@@ -275,12 +232,11 @@ app.get('/get-trends', function (req, res) {
 app.get('/get-comments/:articleid', function (req, res) {
    // make a select request
    // return a response with the results
-   var sql="SELECT comment.*, user.username FROM article, comment, user WHERE article.id = "+req.params.articleid+" AND article.id = comment.article_id AND comment.user_id = user.id ORDER BY comment.timestamp DESC";
-   connection.query(sql,function (err, rows, fields) {
+   pool.query('SELECT comment.*, "user".username FROM article, comment, "user" WHERE article.id = $1 AND article.id = comment.article_id AND comment.user_id = "user".id ORDER BY comment.timestamp DESC', [req.params.articleid], function (err, result){
       if (err) {
           res.status(500).send(err.toString());
       } else {
-          res.send(JSON.stringify(rows));
+          res.send(JSON.stringify(result.rows));
       }
    });
 });
@@ -291,24 +247,18 @@ app.post('/submit-comment/:articleid', function (req, res) {
     if (req.session && req.session.auth && req.session.auth.userId) {
         // First check if the article exists and get the article-id
         var sql="SELECT * FROM article where id ="+req.params.articleid;
-        var num=0;
-        connection.query(sql, function (err, rows, fields) {
+        pool.query(sql, function (err, result) {
             if (err) {
                 res.status(500).send(err.toString());
             } else {
-            	for(var i in rows){
-            		num++;
-            	}
-                if (num == 0) {
+                if (result.rows.length === 0) {
                     res.status(400).send('Article not found');
                 } else {
                     var articleId = req.params.articleid;
                     var userId = req.session.auth.userId;
                     // Now insert the right comment for this article
                     var sql="INSERT INTO comment (article_id, user_id , comment) VALUES ('"+articleId+"','"+userId+"','"+comment+"')";
-                    //var sql="INSERT INTO comment (comment, article_id, user_id) VALUES ('gggggggggggggggggg',"+articleId
-                    //+","+userId+")";
-                    connection.query(sql,function (err, rows, fields) {
+                    pool.query(sql,function (err, result) {
                             if (err) {
                                 res.status(500).send(err.toString());
                             } else {
@@ -319,19 +269,16 @@ app.post('/submit-comment/:articleid', function (req, res) {
             }
        });     
     } else {
-        es.status(403).send('Only logged in users can comment');
+        res.status(403).send('Only logged in users can comment');
     }
 });
 
 //create user route
 app.post('/create-user', function (req, res) {
-	var username = req.body.username;
 	var password = req.body.password;
-	var email = req.body.email;
 	var salt = crypto.randomBytes(128).toString('hex');
 	var dbString = hash(password, salt);
-	var sql="INSERT INTO user (username, password , mail) VALUES ('"+username+"','"+dbString+"','"+email+"')";
-	connection.query(sql, function (err, rows, fields) {
+	pool.query('INSERT INTO "user" (username, password , mail) VALUES ($1, $2, $3)',[req.body.username,dbString,req.body.email], function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
 		} else {
@@ -344,23 +291,19 @@ app.post('/create-user', function (req, res) {
 app.post('/login', function (req, res) {
    	var lemail = req.body.email;
    	var lpassword = req.body.password;
-   	var num=0;
-   	var sql = 'SELECT * FROM user WHERE mail = ' + connection.escape(lemail);
-   	connection.query(sql, function (err, rows, fields) {
+   	var sql = 'SELECT * FROM "user" WHERE mail = ' + connection.escape(lemail);
+   	pool.query(sql, function (err, result) {
     	if (err) {
       		res.status(500).send(err.toString());
     	} else {
-  			for (var i in rows) {
-	  			num++;
-			}
-        	if (num == 0) {
+        	if (result.rows.length === 0) {
         		res.status(403).send('Email/password is invalid');
         	} else {
-		      	var dbString = rows[0].password;
+		      	var dbString = result.rows[0].password;
 		      	var salt = dbString.split('$')[2];
 		      	var hashedPassword = hash(lpassword, salt);
 		      	if (hashedPassword === dbString) {
-		        	req.session.auth = {userId:rows[0].id};
+		        	req.session.auth = {userId:result.rows[0].id};
 		        	res.send('Credentials Correct!');
 		      	} else {
 		        	res.status(403).send('Email/Password Is Invalid');
@@ -373,8 +316,8 @@ app.post('/login', function (req, res) {
 //check login route
 app.get('/check-login', function (req, res) {
    	if (req.session && req.session.auth && req.session.auth.userId) {
-		var sql="SELECT * FROM user WHERE id ="+req.session.auth.userId;
-     	connection.query(sql, function (err, rows, fields) {
+		var sql='SELECT * FROM "user" WHERE id ='+req.session.auth.userId;
+     	pool.query(sql, function (err, result) {
      		if (err) {
     			res.status(500).send(err.toString());
        		} else {
