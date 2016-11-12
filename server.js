@@ -19,16 +19,14 @@ app.use(session({
 
 
 //Server mysl connection
-/*
 var connection = mysql.createConnection({
 	host:'sql202.rf.gd',
 	user:'rfgd_19137621',
 	password:'vaioxloud',
 	database:'rfgd_19137621_Imad'
 });
-*/
 
-//local mysql connection
+/*/local mysql connection
 var connection = mysql.createConnection({
 	host:'localhost',
 	user:'root',
@@ -36,7 +34,7 @@ var connection = mysql.createConnection({
 	database:'IMAD'
 });
 
-
+*/
 
 //Connecting to mysql database
 connection.connect(function(err){
