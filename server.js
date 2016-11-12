@@ -18,18 +18,16 @@ app.use(session({
 }));
 
 
-
-//Server mysql connection
+//Server mysl connection
+/*
 var connection = mysql.createConnection({
 	host:'sql202.rf.gd',
 	user:'rfgd_19137621',
 	password:'vaioxloud',
 	database:'rfgd_19137621_Imad'
 });
+*/
 
-
-
-/*
 //local mysql connection
 var connection = mysql.createConnection({
 	host:'localhost',
@@ -37,7 +35,7 @@ var connection = mysql.createConnection({
 	password:'vaioxloud',
 	database:'IMAD'
 });
-*/
+
 
 
 //Connecting to mysql database
@@ -89,6 +87,10 @@ app.get('/satheesh1997', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'profile.html'));
 });
 
+//author
+app.get('/users', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog', 'users.html'));
+});
 
 //articles route
 app.get('/articles', function(req, res){
@@ -100,12 +102,33 @@ app.get('/articles', function(req, res){
           res.status(500).send(err.toString());
       } else {
       	for (var i in rows) {
-  		template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
-  		<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
+  			template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
+  			<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
         	content=content+template;
         	j=j+1;
     	}
-	res.send(createTemplate(content));
+		res.send(createTemplate(content));
+      }
+   });
+});
+
+//articles route
+app.get('/showusers', function(req, res){
+	var content="";
+	var template="";
+	connection.query("SELECT * FROM user ORDER BY id DESC", function (err, rows, fields) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+      	for (var i in rows) {
+  			template=`<tr>
+                        <td>${rows[i].id}</td>
+                    	<td>${rows[i].username}</td>
+                        <td>${rows[i].mail}</td>
+                    </tr>`;
+        	content=content+template;
+    	}
+		res.send(content);
       }
    });
 });
@@ -122,8 +145,8 @@ app.get('/articlebyname/Articles%20List', function(req, res){
 			for (var i in rows) {
 				template=`<div class="lead">${j}]&nbsp;&nbsp;<a href="/article/${rows[i].id}">${rows[i].title}</a></div>
 				<div class="text-primary text-right" style="margin-top:-20px;">${rows[i].views}&nbsp;VIEWS</div><hr>`;
-		  	content=content+template;
-		  	j=j+1;
+		  		content=content+template;
+		  		j=j+1;
 			}
 			res.send(createTemplate(content));
 		}
@@ -148,7 +171,7 @@ app.get('/article/:id', function(req, res){
 		  		connection.query(sql,function(err,results){ });
 					res.send(createarticle(rows[0]));
 				}else{
-					res.sendFile(path.join(__dirname, 'blog', '404.html'));
+					res.send(errorpage("The Requested Article Is Not Found On The Server"));
 				}
 	
 		  }
@@ -164,7 +187,7 @@ app.get('/articlebyname/:title', function(req, res){
 	connection.query(sql, function (err, rows, fields) {
 	 	if (err) {
 			res.status(500).send(err.toString());
-		 } else {
+		} else {
 				for (var i in rows) {
 				num++;
 		    }
@@ -173,32 +196,32 @@ app.get('/articlebyname/:title', function(req, res){
 					connection.query(sql,function(err,results){ });
 					res.send(createarticle(rows[0]));
 				}else{
-					res.sendFile(path.join(__dirname, 'blog', '404.html'));
+					res.send(errorpage("The Requested Article Is Not Found On The Server"));
 				}
-		  }
- 		});
+		 }
+ 	});
 });
 
 
 //register page route
 app.get('/register', function(req, res){
-  res.send(registerpage());
+  	res.send(registerpage());
 });
 
 //search keyword function
 app.get('/search', function (req, res) {
-  var key=req.query.key;
-  var titles='["Articles List';
+  	var key=req.query.key;
+  	var titles='["Articles List';
 	connection.query("SELECT title FROM article WHERE title LIKE '%"+key+"%'", function (err, rows, fields) {
 		if (err) throw err;
-  	for (var i in rows) {
-			if(i>=0)
-    		titles=titles+'","'+rows[i].title;
+	  	for (var i in rows) {
+				if(i>=0)
+	    		titles=titles+'","'+rows[i].title;
 		}
-  	if(!err){
-			res.send(titles+'"]');
+	  	if(!err){
+				res.send(titles+'"]');
 		}
-  });
+  	});
 });
 
 //checker_email route
@@ -216,7 +239,7 @@ app.get('/checker_email', function (req, res) {
 			res.status(400).send(mail);
 		}
 		else{
-       res.status(200).send(mail);
+       		res.status(200).send(mail);
    	}
     		
   });
@@ -224,94 +247,145 @@ app.get('/checker_email', function (req, res) {
 
 //subscribe route
 app.get('/subscribe', function (req, res) {
-  var email=req.query.email;
-  if(email.length>2){
-	  var sql="INSERT INTO subscribers (email) VALUES ("+connection.escape(email)+")";
-	  connection.query(sql, function (err, rows, fields) {
+  	var email=req.query.email;
+  	if(email.length>2){
+	  	var sql="INSERT INTO subscribers (email) VALUES ("+connection.escape(email)+")";
+	  	connection.query(sql, function (err, rows, fields) {
 			if (err){
 				res.status(500).send(err.toString());
 		 	}else{
 		 		res.status(200).send("SuccessFully Subcribed...");
 	 		}
-	  });
-  }
-  else{
-  	res.status(500).send("Use a valid Email");
-  }
+	  	});
+  	}
+  	else{
+  		res.status(500).send("Use a valid Email");
+  	}
 });
 
 //get-trends route
 app.get('/get-trends', function (req, res) {
-   connection.query("SELECT * FROM article ORDER BY views DESC", function (err, rows, fields) {
+   	connection.query("SELECT * FROM article ORDER BY views DESC", function (err, rows, fields) {
+		if (err) {
+			res.status(500).send(err.toString());
+		} else {
+			res.send(JSON.stringify(rows));
+		}
+	});
+});
+
+app.get('/get-comments/:articleid', function (req, res) {
+   // make a select request
+   // return a response with the results
+   var sql="SELECT comment.*, user.username FROM article, comment, user WHERE article.id = "+req.params.articleid+" AND article.id = comment.article_id AND comment.user_id = user.id ORDER BY comment.timestamp DESC";
+   connection.query(sql,function (err, rows, fields) {
       if (err) {
-      	res.status(500).send(err.toString());
+          res.status(500).send(err.toString());
       } else {
-      	res.send(JSON.stringify(rows));
+          res.send(JSON.stringify(rows));
       }
    });
+});
+
+app.post('/submit-comment/:articleid', function (req, res) {
+   // Check if the user is logged in
+    var comment=req.body.comment;
+    if (req.session && req.session.auth && req.session.auth.userId) {
+        // First check if the article exists and get the article-id
+        var sql="SELECT * FROM article where id ="+req.params.articleid;
+        var num=0;
+        connection.query(sql, function (err, rows, fields) {
+            if (err) {
+                res.status(500).send(err.toString());
+            } else {
+            	for(var i in rows){
+            		num++;
+            	}
+                if (num == 0) {
+                    res.status(400).send('Article not found');
+                } else {
+                    var articleId = req.params.articleid;
+                    var userId = req.session.auth.userId;
+                    // Now insert the right comment for this article
+                    var sql="INSERT INTO comment (article_id, user_id , comment) VALUES ('"+articleId+"','"+userId+"','"+comment+"')";
+                    //var sql="INSERT INTO comment (comment, article_id, user_id) VALUES ('gggggggggggggggggg',"+articleId
+                    //+","+userId+")";
+                    connection.query(sql,function (err, rows, fields) {
+                            if (err) {
+                                res.status(500).send(err.toString());
+                            } else {
+                                res.status(200).send('Comment inserted!')
+                            }
+                    });
+                }
+            }
+       });     
+    } else {
+        es.status(403).send('Only logged in users can comment');
+    }
 });
 
 //create user route
 app.post('/create-user', function (req, res) {
-   var username = req.body.username;
-   var password = req.body.password;
-   var email = req.body.email;
-   var salt = crypto.randomBytes(128).toString('hex');
-   var dbString = hash(password, salt);
-   var sql="INSERT INTO user (username, password , mail) VALUES ('"+username+"','"+dbString+"','"+email+"')";
-   connection.query(sql, function (err, rows, fields) {
-      if (err) {
-          res.status(500).send(err.toString());
-      } else {
-          res.send('User successfully created: ' + username);
-      }
-   });
+	var username = req.body.username;
+	var password = req.body.password;
+	var email = req.body.email;
+	var salt = crypto.randomBytes(128).toString('hex');
+	var dbString = hash(password, salt);
+	var sql="INSERT INTO user (username, password , mail) VALUES ('"+username+"','"+dbString+"','"+email+"')";
+	connection.query(sql, function (err, rows, fields) {
+		if (err) {
+			res.status(500).send(err.toString());
+		} else {
+			res.send('User successfully created: ' + username);
+		}
+	});
 });
 
 //login route
 app.post('/login', function (req, res) {
-   var lemail = req.body.email;
-   var lpassword = req.body.password;
-   var num=0;
-   var sql = 'SELECT * FROM user WHERE mail = ' + connection.escape(lemail);
-   connection.query(sql, function (err, rows, fields) {
-      if (err) {
-      	res.status(500).send(err.toString());
-      } else {
+   	var lemail = req.body.email;
+   	var lpassword = req.body.password;
+   	var num=0;
+   	var sql = 'SELECT * FROM user WHERE mail = ' + connection.escape(lemail);
+   	connection.query(sql, function (err, rows, fields) {
+    	if (err) {
+      		res.status(500).send(err.toString());
+    	} else {
   			for (var i in rows) {
-	  		num++;
-				}
-        if (num == 0) {
-        	res.status(403).send('Email/password is invalid');
-        } else {
-		      var dbString = rows[0].password;
-		      var salt = dbString.split('$')[2];
-		      var hashedPassword = hash(lpassword, salt);
-		      if (hashedPassword === dbString) {
-		        req.session.auth = {userId:rows[0].id};
-		        res.send('credentials correct!');
-		      } else {
-		        res.status(403).send('Email/password is invalid');
-		      }
-        }
-      }
+	  			num++;
+			}
+        	if (num == 0) {
+        		res.status(403).send('Email/password is invalid');
+        	} else {
+		      	var dbString = rows[0].password;
+		      	var salt = dbString.split('$')[2];
+		      	var hashedPassword = hash(lpassword, salt);
+		      	if (hashedPassword === dbString) {
+		        	req.session.auth = {userId:rows[0].id};
+		        	res.send('Credentials Correct!');
+		      	} else {
+		        	res.status(403).send('Email/Password Is Invalid');
+		      	}
+        	}
+      	}
    });
 });
 
 //check login route
 app.get('/check-login', function (req, res) {
-   if (req.session && req.session.auth && req.session.auth.userId) {
-			var sql="SELECT * FROM user WHERE id ="+req.session.auth.userId;
+   	if (req.session && req.session.auth && req.session.auth.userId) {
+		var sql="SELECT * FROM user WHERE id ="+req.session.auth.userId;
      	connection.query(sql, function (err, rows, fields) {
      		if (err) {
     			res.status(500).send(err.toString());
-       	} else {
-        	res.send(rows[0].username);    
-       	}
+       		} else {
+        		res.send(rows[0].username);    
+       		}
      	});
-		} else {
- 			res.status(400).send('You are not logged in');
- 		}
+	} else {
+		res.status(400).send('You are not logged in');
+	}
 });
 
 //logout route
@@ -322,7 +396,7 @@ app.get('/logout', function (req, res) {
 
 //if route not found
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'blog', '404.html'));
+  res.send(errorpage("The Requested Path/Url Is Not Found On The Server"));
 });
 
 //hash function
@@ -589,7 +663,7 @@ function registerpage(){
 //creating articles
 function createarticle(info){
 	var atemplate=`
-	<!DOCTYPE>
+<!DOCTYPE>
 <html>
     <head>
         <script>
@@ -676,6 +750,7 @@ function createarticle(info){
     </head>
 <body  style="font-family:sat;background:#4a50b5;">
 
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -705,7 +780,6 @@ function createarticle(info){
 				<li><a class="brand" href="/techhunt"  style=" padding-left:60px;  padding-right:60px;">
                 <span class="fa fa-phone" aria-hidden="true"></span>&nbsp;HELP & SUPPORT</a></li>
                 <li></li>
-                <li id="logout"></li>
 			    </ul>
 			    <form class="navbar-form navbar-right" role="search">
 			
@@ -735,7 +809,39 @@ function createarticle(info){
 			    
 			</div><!-- /.navbar-collapse -->
 		    </nav>
-    
+    <!-- sign in modal -->
+    <div class="modal fade" id="sign-in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center">TECH HUNT</h4>
+                </div>
+                <div class="modal-body">
+                    <legend>Login Form</legend>
+                    <div id="loginalert">
+                        <div class="alert alert-warning text-center">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong>SECURITY SYSTEM ALERT!</strong><br> Kindly Use The Email Registered For Login in!
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" class="form-control" required="" id="loginemail" placeholder="Email Address" onkeyup="email_check()">
+                        <div class="input-group-addon" id="email_addon"><span class="fa fa-envelope"></span></div>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <input type="password" class="form-control" required="" id="loginpassword" placeholder="Password">
+                        <div class="input-group-addon" id="password_addon"><span class="fa fa-key"></span></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                    <button id ="login_user" type="submit" class="btn btn-primary">LOGIN</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container" style="margin-top:100px;">
         
         <div class="row">
@@ -758,60 +864,134 @@ function createarticle(info){
             </div>
             <div class="col-lg-9" style="background:white;padding:40px;margin-left:15px;margin-right:15px;margin-top:50px;">
                 
-             <div class="form-group col-md-6" style="margin-top:30px;">
-						<legend>COMMENTS</legend>
-						<textarea name="" id="comment" class="form-control" rows="3" required="required" placeholder="Enter your comments..."></textarea>
-						<p class="text-right" style="margin-top:20px;"><button id="comment_btn" type="submit" class="btn btn-md btn-primary">COMMENT</button></p>
+             <div class="form-group col-md-7" style="margin-top:30px;">
+						<legend>COMMENTS&nbsp;|&nbsp;<span id="login_area"></span></legend>
+						<textarea name="comment" id="comment" class="form-control" rows="3" required="required" placeholder="Enter your comments..."></textarea>
+						<p class="text-right" style="margin-top:20px;"><button id="comment_btn" type="submit" class="btn btn-md btn-primary">
+						<span class="fa fa-comment"></span>&nbsp;COMMENT</button></p>
 						
-						<div class="media" style="padding:5px;border-left:2px solid crimson;">
-							<a class="pull-left" href="/satheesh1997">
-								<img class="media-object" src="/images/photo.jpg" alt="Image" width="50px";>
-							</a>
-							<div class="media-body">
-								<a href="/satheesh1997"><h4 class="media-heading" style="margin-top:5px;">Satheesh Kumar D</h4></a>
-								<p>Nice post..</p>
-							</div>
-							<hr style="border-top:1px solid grey;">
-							<a class="pull-left" href="/satheesh1997">
-								<img class="media-object" src="/images/photo.jpg" alt="Image" width="50px";>
-							</a>
-							<div class="media-body">
-								<a href="/satheesh1997"><h4 class="media-heading" style="margin-top:5px;">Satheesh Kumar D</h4></a>
-								<p>Nice post..</p>
-							</div>
+						<div class="media" style="padding:5px;" id="comments">
 						</div>
 						
-					</div>
+			</div>
             </div>
-            
+            <input type="hidden" id="article_id" value="${info.id}">
             
         </div>
         
-    </div>
-  <script>
-	
-			
-			var disqus_config = function () {
-			this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-			this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-			};
-			(function() { // DON'T EDIT BELOW THIS LINE
-			var d = document, s = d.createElement('script');
-			s.src = '//tech-hunt.disqus.com/embed.js';
-			s.setAttribute('data-timestamp', +new Date());
-			(d.head || d.body).appendChild(s);
-			})();
-			</script>
-			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>  
-        <div class="col-lg-12" style="background:black;padding-top:20px;padding-bottom:20px;color:white;font-size:15px;margin-top:10px;">
-        	<p class="text-center"><span class="fa fa-copyright"></span>&nbsp;Satheesh Kumar 2016-17</p>
-        	<p class="text-center">Made in <span class="fa fa-heart"></span>&nbsp;India</p>
+    </div> 
+    <div class="col-lg-12" style="background:black;padding-top:20px;padding-bottom:20px;color:white;font-size:15px;margin-top:10px;">
+    	<p class="text-center"><span class="fa fa-copyright"></span>&nbsp;Satheesh Kumar 2016-17</p>
+    	<p class="text-center">Made in <span class="fa fa-heart"></span>&nbsp;India</p>
 	</div>
-</body>
-<script src="/js/bootstrap.min.js"></script>
-</html>
-	`;
+	</body>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/comment.js"></script>
+	</html>
+`;
+
 	return atemplate;
+}
+
+function errorpage(data){
+	var error_template=`
+		<!DOCTYPE>
+<html>
+    <head>
+		<script>
+		    document.title="404";
+		</script>
+		<noscript> JavaScript Is Not Enabled On Browser </noscript>
+	    <!-- Stylesheet -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href="/css/bootstrap-social.css" rel="stylesheet">
+		<link href="/css/font-awesome.css" rel="stylesheet">
+	    <!-- Stylesheet added -->
+	    <script src="/js/jquery.min.js"></script>
+	    <script src="/js/typeahead.min.js"></script>
+	    <script src="/js/bootstrap.min.js"></script>
+	    <!-- meta tags -->
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+	    <!-- meta end -->
+	    <!-- Authors Fonts -->
+		<style>
+		    @font-face {
+			font-family: sat;
+			src: url(/fonts/JosefinSans-Regular.ttf);
+		    }
+		    @font-face {
+			font-family: satbold;
+			src: url(/fonts/JosefinSans-SemiBold.ttf);
+		    }
+		    .brand:hover{
+			border-bottom:3px solid crimson;
+		    }
+		    .src_btn:hover{
+			cursor:pointer;
+		    }
+		    .alink{
+			border-bottom:3px solid black;
+			border-right:1px solid grey;
+		    }
+		    .brand{
+			border-right:1px solid grey;
+		    }
+		    .typeahead, .tt-query, .tt-hint {
+		
+			font-size: 14px;
+			padding: 8px;
+		    }
+		    .typeahead {
+			background-color: #FFFFFF;
+		    }
+		    .typeahead:focus {
+			border: 2px solid #0097CF;
+		    }
+		    .tt-query {
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+		    }
+		    .tt-hint {
+			color: #999999;
+		    }
+		    .tt-dropdown-menu {
+			background-color: #FFFFFF;
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			border-radius: 8px;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+			margin-top: 12px;
+			padding: 8px 0;
+		    }
+		    .tt-suggestion {
+			font-size: 14px;
+			line-height: 24px;
+			padding: 3px 20px;
+			width:200px;
+		    }
+		    .tt-suggestion.tt-is-under-cursor {
+			background-color: #0097CF;
+			color: #FFFFFF;
+		    }
+		    .tt-suggestion p {
+			margin: 0;
+		    }
+		</style>
+	</head>
+
+	<body  style="font-family:sat;background:#4a50b5;">
+
+	    <div class="container" style="color:white;margin-top:100px;">
+	        <p class="text-center" style="font-size:200px;"><span class="fa fa-warning"></span></p>
+	        <p class="text-center" style="font-size:40px;margin-top:40px;">"${data}"</p>				
+	    </div>
+
+	<body>
+
+</html>
+
+
+	`;
+	return error_template;
 }
 
 

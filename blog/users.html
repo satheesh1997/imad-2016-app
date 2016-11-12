@@ -1,0 +1,201 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+        <!-- meta end -->
+
+        <script>
+            document.title="Tech Hunt";
+        </script>
+        <noscript> JavaScript Is Not Enabled On Browser</noscript>
+
+        <!-- Stylesheet -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-social.css" rel="stylesheet">
+        <link href="./css/font-awesome.css" rel="stylesheet">
+
+        <!-- Javascript -->
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/typeahead.min.js"></script>
+
+        <!-- Authors Fonts -->
+        <style>
+            @font-face {
+                font-family: sat;
+                src: url(./fonts/JosefinSans-Regular.ttf);
+            }
+            @font-face {
+                font-family: satbold;
+                src: url(./fonts/JosefinSans-SemiBold.ttf);
+            }
+            .brand:hover{
+                border-bottom:3px solid crimson;
+            }
+            .src_btn:hover{
+                cursor:pointer;
+            }
+            .alink{
+                border-bottom:3px solid black;
+                border-right:1px solid grey;
+            }
+            .brand{
+                border-right:1px solid grey;
+            }
+            .typeahead, .tt-query, .tt-hint {
+                
+                font-size: 14px;
+                padding: 8px;
+            }
+            .typeahead {
+                background-color: #FFFFFF;
+            }
+            .typeahead:focus {
+                border: 2px solid #0097CF;
+            }
+            .tt-query {
+                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+            }
+            .tt-hint {
+                color: #999999;
+            }
+            .tt-dropdown-menu {
+                background-color: #FFFFFF;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+                margin-top: 12px;
+                padding: 8px 0;
+            }
+            .tt-suggestion {
+                font-size: 14px;
+                line-height: 24px;
+                padding: 3px 20px;
+                width:200px;
+            }
+            .tt-suggestion.tt-is-under-cursor {
+                background-color: #0097CF;
+                color: #FFFFFF;
+            }
+            .tt-suggestion p {
+                margin: 0;
+            }
+            .margin-sm{
+            	margin-top:0px;
+	       }
+	       @keyframes spin{
+		        0%{
+			    transform: rotate(0deg);
+		        }
+		        100%{
+			    transform: rotate(360deg);
+		        }
+		  }
+
+    	    .loader4 {
+        		border: 4px solid #4a50b5;
+        		border-top: 2px solid white;
+        		border-bottom: 2px solid white;
+        		border-radius: 50%;
+        		width: 70px;
+        		height: 70px;
+        		padding:0px;
+        		text-align: center;
+        		margin-left:95px;
+        		margin-top:100px;
+        		margin-bottom:60px;
+        		animation: spin 7s linear infinite;
+    	  }
+        </style>
+    </head>
+    <body  style="font-family:sat;background:#4a50b5;">
+            <!-- background:darkorchid; -->
+            
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+
+                <a href="/" class="navbar-brand" style="margin-right:70px;font-family:satbold; font-size:25px;">
+                <span class="fa fa-home" aria-hidden="true"></span>&nbsp;TECH HUNT</a>
+            </div>
+            
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse" style="background:white;box-shadow: -4px 1px 12px #888888;">
+                <ul class="nav navbar-nav text-center" style="font-family:satbold; font-size:15px;">
+                <li class="brand"></li>
+                <li></li>
+                <li>
+                <a class="brand" href="/articles"  style=" padding-left:70px; padding-right:70px;border-left:1px solid black;">
+                <span class="fa fa-book" aria-hidden="true"></span>&nbsp;ARTICLES</a></li>
+                <li></li>
+                <li><a class="active alink" href="#"  style=" padding-left:70px; padding-right:70px;">
+                <span class="fa fa-users" aria-hidden="true"></span>&nbsp;USERS</a></li>
+                <li></li>
+                <li><a class="brand" href="/techhunt"  style=" padding-left:60px;  padding-right:60px;">
+                <span class="fa fa-phone" aria-hidden="true"></span>&nbsp;HELP & SUPPORT</a></li>
+                <li></li>
+                <li id="logout"></li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search">
+            
+                <div class="input-group"  style="font-family:satbold; font-size:25px;">
+                <!-- search script -->
+                    <script>
+                    $(document).ready(function(){
+                         $('input.typeahead').typeahead({
+                                name: 'typeahead',
+                                remote:'/search?key=%QUERY',
+                                limit : 10
+                        });
+                    });
+                    function search(){
+                        var keyword=document.getElementById("sterm").value;
+                                    window.location="/articlebyname/"+keyword;
+                    }
+                    </script>
+                <!-- search script end -->
+                    <input type="text" name="typeahead" id="sterm" class="typeahead form-control" autocomplete="off" spellcheck="false" placeholder="Keywords to search article..">
+                    <div class="input-group-addon src_btn"onclick="search()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </div>
+                </div>
+            
+                </form>
+                
+            </div><!-- /.navbar-collapse -->
+        </nav>
+        <div class="container" style="margin-top: 100px;background: white;">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h2 style="margin-top: 10px;" align="center">TECH HUNT USERS<span class="fa fa-photo"></span></h2>
+                    <hr style="width:50px;border-top:2px solid black">
+                    <div class="table-responsive" style="padding-top: 20px;">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">USER ID</th>
+                                    <th class="text-center">NAME</th>
+                                    <th class="text-center">EMAIL ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="/js/users.js"></script>
+</html>
