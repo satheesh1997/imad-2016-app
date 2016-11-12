@@ -61,7 +61,7 @@ app.get('/techhunt', function(req, res){
 app.get('/satheesh1997', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'profile.html'));
 });
-
+var pool = new Pool(config);
 //author
 app.get('/users', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'users.html'));
@@ -220,7 +220,7 @@ app.get('/subscribe', function (req, res) {
 
 //get-trends route
 app.get('/get-trends', function (req, res) {
-   	pool.query("SELECT * FROM article ORDER BY views DESC", function (err, result) {
+   	pool.query('SELECT * FROM article ORDER BY views DESC', function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
 		} else {
