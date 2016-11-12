@@ -192,10 +192,10 @@ app.get('/checker_email', function (req, res) {
 			res.status(500).send(err.toString());
 		} else {
 			if(result.rows.length == 0){
-				res.status(400).send(req.query.email);
+				res.status(200).send(req.query.email);
 			}
 			else{
-				res.status(200).send(result.rows[0].mail);
+				res.status(400).send(result.rows[0].mail);
 			}
 		}	
   });
