@@ -1,0 +1,122 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+        <!-- meta end -->
+
+        <script>
+            document.title="Tech Hunt";
+        </script>
+        <noscript> JavaScript Is Not Enabled On Browser</noscript>
+
+        <!-- Stylesheet -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="./css/bootstrap-social.css" rel="stylesheet">
+        <link href="./css/font-awesome.css" rel="stylesheet">
+
+        <!-- Javascript -->
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/typeahead.min.js"></script>
+        <!-- Authors Fonts -->
+        <style>
+            @font-face {
+                font-family: sat;
+                src: url(./fonts/JosefinSans-Regular.ttf);
+            }
+            @font-face {
+                font-family: satbold;
+                src: url(./fonts/JosefinSans-SemiBold.ttf);
+            }
+            .it:hover{
+                cursor:pointer;
+            }
+        </style>
+    </head>
+    <body style="background:url(./images/bg.jpg);font-family: sat;">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <a class="navbar-brand" href="http://www.fb.com/satheesh1997">AUTHOR</a>
+            </div>
+        </nav>
+        <div class="container" style="margin-top:70px;">
+            <div class="row">
+                <div class="col-lg-3" style="background: white; box-shadow: 2px 2px 10px #888;padding-top:10px;padding-bottom:10px;height:540px;">
+                    <img src="./images/cover.jpg" class="img-responsive" style="">
+                   <img src="./images/sat.jpg" class="img-circle img-responsive" style="margin-bottom:20px;margin-left:70px;margin-top:-50px;border:2px solid white;width:120px;">
+                   <h3 align="center">SATHEESH KUMAR</h3>
+                   <hr style="border-top:2px solid gray;width:30px;"/>
+                   <div class="list-group text-center">
+                       <a onclick="load_in()" id="intro" class="list-group-item active it">INTRODUCTION</a>
+                       <a onclick="load_per()" id="personal" class="list-group-item it">PERSONAL</a>
+                       <a onclick="load_tech()" id="technical" class="list-group-item it ">TECHNICAL</a>
+                   </div>
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-8" id="show" style="background: white; box-shadow: 2px 2px 10px #888;padding-top:50px;padding-bottom:10px;padding-left:20px;">
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        var intro=`
+                    <legend>INTRODUCTION</legend>
+                    <p class="lead text-center text-danger">"Araise awake and stop not till the goal is reached"</p>
+                    <p style="padding:10px;font-size: 17px;">Satheesh Kumar one of the young programmer spends most of his time on the computer developing apps or learns new technology. His only aim to develop some portal that can make everyone reach programming without age limits.</p>
+                    <p style="padding:10px;font-size: 17px;">Born in the District of Tuticorin and raised in Coimbatore a city known for textiles and spinning mills. Satheesh Kumar attended his primary schoolings in Sangaman Matriculation School in his locality, Later During the secondary and higher secondary studies he was transferd to Amrita Vidyalyam where he learnt not only lessons he also acquired some spritual knowledge. After completing higher studies he went to Sri Krishna College Of Technology one of the reputed institution in Tamilnadu. Where he is pursuing his Bachelor of Enginnering Degree on Computer Science.</p>
+                    <p style="padding:10px;font-size: 17px;"><blockquote class="pull-right" >
+                        - A friend of him
+                    </blockquote> </p>`;
+        var personal=`
+                    <legend>PERSONAL DETAILS</legend>
+                    <p class="lead text-center text-danger">"If you are good at something never do that for free"</p>
+                    <p style="padding:10px;font-size: 17px;">
+                            <b>Date Of Birth :</b> 10-10-1997<br>
+                            <b>Place Of Birth:</b> Tuticorin<br>
+                            <b>Email Id:</b> satheesh.101097@gmail.com<br>
+                            <b>Location:</b> Tamilnadu,India<br>
+                            <b>City:</b> Coimbatore<br>
+                            <b>Town/Village:</b> Sanganoor<br>
+                            <b>Postal Code:</b>641-027<br>
+                            <b>Social Links:</b><a href="http://www.fb.com/satheesh1997">FaceBook</a>
+                    </p>
+                    <p style="padding:10px;font-size: 17px;"><blockquote class="pull-right" >
+                        - Satheesh Kumar
+                    </blockquote> </p>`;
+        var technical=`
+                    <legend>TECHNICAL DETAILS</legend>
+                    <p class="lead text-center text-danger">"Take a idea, Make it your dream, Think about it"</p>
+                    <p style="padding:10px;font-size: 17px;">
+                            <i>1. C/C++, php, perl programmmer<br><br>
+                            2. Made a project on perl & mysql<br><br>
+                            3. Made an android app and web app to calculate flames<br><br>
+                            4. Created a tech blog site using nodejs<br><br>
+                            5. Created a Bank login,trasaction,deposit system using c</i>
+                    </p>
+                    <p style="padding:10px;font-size: 17px;"><blockquote class="pull-right" >
+                        - Satheesh Kumar
+                    </blockquote> </p>`;
+        function load_in(){
+            document.getElementById("show").innerHTML=intro;
+            $("#intro").addClass("active");;
+            $("#personal").removeClass("active");;
+            $("#technical").removeClass("active");;
+        }
+        function load_per(){
+            document.getElementById("show").innerHTML=personal;
+            $("#personal").addClass("active");;
+            $("#intro").removeClass("active");;
+            $("#technical").removeClass("active");;
+        }
+        function load_tech(){
+            document.getElementById("show").innerHTML=technical;
+            $("#personal").removeClass("active");;
+            $("#intro").removeClass("active");;
+            $("#technical").addClass("active");;
+        }
+        load_in();
+    </script>
+</html>
