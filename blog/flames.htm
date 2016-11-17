@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flames | APP</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+        <!-- Bootstrap -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link rel="shortcut icon" href="./images/giphy.gif" type="image/x-icon">
+		<style>
+		@font-face {
+                font-family: flame;
+                src: url(./fonts/JosefinSans-SemiBold.ttf);
+            }
+            body{
+                background-image:url("./images/bg.gif");
+                background-repeat: no-repeat;
+                background-size: 1500px 1200px;
+            }
+		</style>
+    </head>
+<body style="font-family:flame;">
+
+   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background:deeppink; height:55px;">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+         <a class="navbar-brand" href="./about.php" style="color:white;font-weight:bold;font-size:25px;">
+             <img src="./images/giphy.gif" style="width:42px; margin-top:-9px;">
+            <div style="margin-top:-23px; margin-left:47px; font-family:flame">FLAMES</div></a>
+    </div>
+</nav>
+
+<div class="container center" style="margin-top:100px;">
+	<div class="row text-center">
+               <div class="col-lg-3" style="padding:10px;padding-bottom:90px;border:2px solid yellow;background-color:pink;margin-left:10px;margin-right:10px;">
+			<div class="text-center">
+				<form name=first>
+				<input name="name" id="yname" onkeyup="checnum(this)" type="text" class="form-control text-center" placeholder="Your Name" style="margin-top:40px;font-family:flame;">
+				<input name="name1" id="pname" onkeyup="checnum(this)" type="text" class="form-control text-center" placeholder="Partner's Name" style="margin-top:30px;font-family:flame;">
+				<div style='font-weight:bold;margin-top:30px;' id='msg'></div>
+				<input name=calculate type=button value=FLAMES onclick=calc()  class="form-control text-center btn btn-small  btn-primary" style="margin-top:35px;font-family:flame;">
+				<input type=reset value=RESET type="button" id="rclick" class="form-control text-center btn btn-small  btn-danger" value="TRY AGAIN" style="margin-top:35px;font-family:flame;">
+				</form>
+			</div>
+		</div>
+		<div id="dis" class="col-sm-8" style="margin-top:20px; padding:30px;background-color:pink;margin-left:10px;margin-right:10px;">
+
+	            <div id='tablid' class='clearfix'>
+                <div class='group' align='center'>
+                    <div class='love_result'>
+                        <span name=n1 id=nam1></span>
+                        <img name=pic1 id=pic1 width=0 height=0 src=./images/loading.gif>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body text-left" style="font-size:15px;text-align:left;">
+                                      <h3 class="text-center">FLAMES</h3>
+                                      <hr width="20%" color="black">
+                                      <blockquote class="blockquote">
+                                     This is an online tool which is used for calculating the relationship status
+                                     between 2 users!. This uses a special algorithm for calculationg the relation.
+                                     <br>
+                                     The Script can be downloaded from the 
+                                     <a href="./downloads/flames.zip">Download Link</a>
+                                      <br><br>
+                                      <footer class=" text-right blockquote-footer">Hunter<cite title="Source Title">&nbsp;(APP DESIGNER)</cite></footer>
+                                      </blockquote>
+                                      
+            </div>
+    </form>
+</div>
+		</div>
+		
+	</div>
+</div>
+<div class="text-center" style="margin-top:119px; background:#333333;height:50px;color:white; padding:10px;    font-size: 15px;">
+        <emp>
+            &copy; Aplus Softwares
+        </emp>
+    </div>
+</body> 
+<script type='text/javascript' src='./js/flames.js'></script>
+ <script src="./js/jquery.min.js"></script>
+ <script src="./js/bootstrap.min.js"></script>
+</html>
