@@ -65,6 +65,10 @@ app.get('/satheesh1997', function(req, res){
 app.get('/flames', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'flames.htm'));
 });
+//flames
+app.get('/downloads/flames.zip', function(req, res){
+  res.sendFile(path.join(__dirname, 'downloads', 'flames.zip'));
+});
 var pool = new Pool(config);
 //author
 app.get('/users', function(req, res){
