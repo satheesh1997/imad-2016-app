@@ -508,7 +508,7 @@ function createTemplate (data) {
 			<div id="login">
 			    
 			</div>
-			<div class="col-md-8" style="margin-left:20px;margin-right:20px;padding-top:20px; background:white;">
+			<div class="col-md-12" style="margin-left:20px;margin-right:20px;padding-top:20px; background:white;">
 			    ${data}
 			</div>
 
