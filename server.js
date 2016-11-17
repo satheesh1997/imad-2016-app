@@ -61,6 +61,10 @@ app.get('/techhunt', function(req, res){
 app.get('/satheesh1997', function(req, res){
   res.sendFile(path.join(__dirname, 'blog', 'profile.html'));
 });
+//flames
+app.get('/flames', function(req, res){
+  res.sendFile(path.join(__dirname, 'blog', 'flames.htm'));
+});
 var pool = new Pool(config);
 //author
 app.get('/users', function(req, res){
