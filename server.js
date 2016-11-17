@@ -306,7 +306,7 @@ app.post('/login', function (req, res) {
    var email = req.body.email;
    var password = req.body.password;
    
-   pool.query('SELECT * FROM "user" WHERE email = $1', [email], function (err, result) {
+   pool.query('SELECT * FROM "user" WHERE mail = $1', [email], function (err, result) {
       if (err) {
           res.status(500).send(err.toString());
       } else {
