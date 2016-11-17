@@ -186,7 +186,7 @@ app.get('/register', function(req, res){
 //search keyword function
 app.get('/search', function (req, res) {
   	var titles='["Articles List';
-	pool.query('SELECT title FROM article WHERE title LIKE $1',['%'+req.query.key+'%'], function (err, result) {
+	pool.query("SELECT title FROM article WHERE title LIKE $1",['%'+req.query.key+'%'], function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
 		} else {
