@@ -302,29 +302,31 @@ app.post('/create-user', function (req, res) {
 	});
 });
 
-//login route
 app.post('/login', function (req, res) {
-   	var lemail = req.body.email;
-   	var lpassword = req.body.password;
-   	var sql = 'SELECT * FROM user WHERE mail = '+lemail;
-   	pool.query(sql, function (err, result) {
-    	if (err) {
-      		res.status(500).send(err.toString());
-    	} else {
-        	if (result.rows.length === 0) {
-        		res.status(403).send('Email/password is invalid');
-        	} else {
-		      	var dbString = result.rows[0].password;
-		      	var salt = dbString.split('$')[2];
-		      	var hashedPassword = hash(lpassword, salt);
-		      	if (hashedPassword === dbString) {
-		        	req.session.auth = {userId:result.rows[0].id};
-		        	res.send('Credentials Correct!');
-		      	} else {
-		        	res.status(403).send('Email/Password Is Invalid');
-		      	}
-        	}
-      	}
+   var email = req.body.email;
+   var password = req.body.password;
+   
+   pool.query('SELECT * FROM "user" WHERE email = $1', [email], function (err, result) {
+      if (err) {
+          res.status(500).send(err.toString());
+      } else {
+          if (result.rows.length === 0) {
+              res.status(403).send('username/password is invalid');
+          } else {
+              // Match the password
+              var dbString = result.rows[0].password;
+              var salt = dbString.split('$')[2];
+              var hashedPassword = hash(password, salt); // Creating a hash based on the password submitted and the original salt
+              if (hashedPassword === dbString) {
+                req.session.auth = {userId: result.rows[0].id};
+                
+                res.send('credentials correct!');
+                
+              } else {
+                res.status(403).send('username/password is invalid');
+              }
+          }
+      }
    });
 });
 
