@@ -194,7 +194,8 @@ app.get('/search', function (req, res) {
 	  		for(var i=0;i<result.rows.length;i++) {
 	    		titles=titles+'","'+result.rows[i].title;
 			}
-			res.send(titles+'"]');
+			//res.send(titles+'"]');
+			res.send(result.rows);
 		}
   	});
 });
