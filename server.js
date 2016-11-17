@@ -59,7 +59,7 @@ app.get('/techhunt', function(req, res){
 
 //author
 app.get('/satheesh1997', function(req, res){
-  res.sendFile(path.join(__dirname, 'blog', 'profile.html'));
+  res.sendFile(path.join(__dirname, 'blog', 'pro.html'));
 });
 //flames
 app.get('/flames', function(req, res){
