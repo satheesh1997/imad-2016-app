@@ -79,4 +79,4 @@ function loadtrends(){
 
 loadtrends();
 
-setInterval(loadtrends,3000);
+setInterval(loadtrends,20000);
