@@ -34,6 +34,12 @@ app.get('/fonts/:font', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/fonts', req.params.font));
 });
 
+//font routes
+app.get('/favicon.ico', function (req, res) {
+  res.sendFile(path.join(__dirname, 'blog', 'favicon.ico'));
+});
+
+
 //js routes
 app.get('/js/:script', function (req, res) {
   res.sendFile(path.join(__dirname, 'blog/js', req.params.script));
