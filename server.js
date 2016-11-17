@@ -306,7 +306,7 @@ app.post('/create-user', function (req, res) {
 app.post('/login', function (req, res) {
    	var lemail = req.body.email;
    	var lpassword = req.body.password;
-   	var sql = 'SELECT * FROM "user" WHERE mail = ' + connection.escape(lemail);
+   	var sql = 'SELECT * FROM "user" WHERE mail = '+lemail;
    	pool.query(sql, function (err, result) {
     	if (err) {
       		res.status(500).send(err.toString());
