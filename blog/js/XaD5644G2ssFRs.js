@@ -18,7 +18,6 @@ function email_check(){
       	if(XMLHttpRequestObject.status != 400){
 		    	//function if mail is not in server
 		    	email_addon.innerHTML=`<span class="fa fa-times" style="color:red"></span>`;
-		    	document.getElementById("login_user").disabled=true;
         }
         else{
           //function if mail is found on the server
