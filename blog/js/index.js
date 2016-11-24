@@ -78,5 +78,3 @@ function loadtrends(){
 }
 
 loadtrends();
-
-setInterval(loadtrends,20000);
