@@ -319,7 +319,7 @@ app.post('/login', function (req, res) {
               if (hashedPassword === dbString) {
                 req.session.auth = {userId: result.rows[0].id};
                 
-                res.send('credentials correct!');
+                res.status(200).send('credentials correct!');
                 
               } else {
                 res.status(403).send('username/password is invalid');
@@ -336,7 +336,7 @@ app.get('/check-login', function (req, res) {
      		if (err) {
     			res.status(500).send(err.toString());
        		} else {
-        		res.send(rows[0].username);    
+        		res.status(200).send(rows[0].username);    
        		}
      	});
 	} else {
