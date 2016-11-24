@@ -201,7 +201,6 @@ app.get('/search', function (req, res) {
 
 //checker_email route
 app.get('/checker_email', function (req, res) {
-  var mail=null;
   pool.query('SELECT * FROM "user" WHERE mail = $1',[req.query.email], function (err, result) {
 		if (err) {
 			res.status(500).send(err.toString());
