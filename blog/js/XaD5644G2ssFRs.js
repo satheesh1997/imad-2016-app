@@ -30,9 +30,17 @@ function email_check(){
     }
 }
 
+function escapeHTML (text)
+{
+    var $text = document.createTextNode(text);
+    var $div = document.createElement('div');
+    $div.appendChild($text);
+    return $div.innerHTML;
+}
+
 function loadLoggedInUser (username) {
 	var loginArea = document.getElementById('login_area');
-	loginArea.innerHTML = `<h4 style="color:yellow;"> Welcome <i>${username}</i></h4>`;
+	loginArea.innerHTML = `<h4 style="color:yellow;"> Welcome <i>${escpaeHTML(username)}</i></h4>`;
   document.getElementById("logout").innerHTML=`<a class="brand" href="/logout"  style=" padding-left:20px;  padding-right:20px;">
   <span class="fa fa-sign-out" aria-hidden="true"></span>&nbsp;LOGOUT</a>`;   
 }
