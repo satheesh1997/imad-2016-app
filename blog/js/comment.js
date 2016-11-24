@@ -5,6 +5,14 @@ var comment_template="";
 
 //When The Comment Btn Is Clicked
 
+function escapeHTML (text)
+{
+    var $text = document.createTextNode(text);
+    var $div = document.createElement('div');
+    $div.appendChild($text);
+    return $div.innerHTML;
+}
+
 comment_btn.onclick= function(){
         var request = new XMLHttpRequest();
         // Capture the response and store it in a variable
@@ -44,9 +52,9 @@ function loadComments () {
 					<img class="media-object" src="/images/photo.jpg" alt="Image" width="50px";>
 					</a>
 					<div class="media-body" style="margin-left:10px;">
-						<p class="text-primary">${commentsData[i].username}</p> 
+						<p class="text-primary">${escapeHTML(commentsData[i].username)}</p> 
 						<p class="pull-right"style="margin-top:-8px;color:grey;font-size:10px;">${time.toLocaleTimeString()} on ${time.toLocaleDateString()} </p>
-						<p style="margin-top:3px;">${commentsData[i].comment}</p>
+						<p style="margin-top:3px;">${escapeHTML(commentsData[i].comment)}</p>
 					</div>
 					<hr style="border-top:1px solid grey;">`;
                     content += comment_template;
@@ -66,7 +74,7 @@ loadComments();
 
 function loadLoggedInUser (username) {
 	var loginArea = document.getElementById('login_area');
-	loginArea.innerHTML = `<h4 style="color:crimson;"><b>${username}</b></h4>`;
+	loginArea.innerHTML = `<h4 style="color:crimson;"><b>${escapeHTML(username)}</b></h4>`;
 }
 
 
